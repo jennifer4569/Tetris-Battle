@@ -32,7 +32,7 @@ if "%1"=="compile" (
 ::runs the program
 if "%1"=="run" (
    echo Running program...
-   java -cp "lib/sqlite-jdbc-3.30.1.jar;." src/main/SQLiteJDBC
+   java -cp "lib/sqlite-jdbc-3.30.1.jar;." src/main/TetrisDatabase
    exit /B 0
 )
 

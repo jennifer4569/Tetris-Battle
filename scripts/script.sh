@@ -69,7 +69,7 @@ else
     if [ $1 = "run" ]
     then
 	echo "Running program..."
-	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/SQLiteJDBC
+	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/TetrisDatabase
     fi
 
     #clean
