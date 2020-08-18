@@ -183,10 +183,10 @@ public class TetrisDatabase {
             // e.printStackTrace();
         }
     }
-    public static String[] getLeaderboard(){
+    public static Pair[] getLeaderboard(){
         return getLeaderboard(10);
     }
-    public static String[] getLeaderboard(int n){
+    public static Pair[] getLeaderboard(int n){
 
         Connection c = null;
         Statement stmt = null;
@@ -202,18 +202,16 @@ public class TetrisDatabase {
             ResultSet r = stmt.executeQuery(cmd);
             int currHS = r.getInt(1);
 
-            String ret = "";
+            Pair[] leaderboard = new Pair[n];
+            int i = 0;
             while(r.next()) {
-                for(int i = 1; i <= 2; i++){           
-                    ret += r.getString(i) + " ";
-                } 
-                ret += "\n";
+                leaderboard[i] = new Pair(r.getString(1), Integer.parseInt(r.getString(2)));
+                i++;
             }
-            System.out.println(ret);
 
-            // r.getArray(1);
             stmt.close();
             c.close();
+            return leaderboard;
         }
         catch (Exception e){
             e.printStackTrace();
