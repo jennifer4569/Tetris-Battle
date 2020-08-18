@@ -40,7 +40,7 @@ public class TetrisDatabase {
             stmt = c.createStatement();
 
             String cmd = "SELECT COUNT(*) FROM USERS WHERE" +
-                            " USERNAME='" + username + "';";
+                            " USERNAME = '" + username + "';";
             ResultSet r = stmt.executeQuery(cmd);
 
             //if the user has not existed before
@@ -66,7 +66,9 @@ public class TetrisDatabase {
             return false;
         }
     }
-
+    //since this is being run by server code:
+    //the idea is to user authenticateuser, if it returns true then make a thread
+    //and the rest of the functions assumes that the user has been authenticated
     public static boolean authenticateUser(String username, String password){
         if(!isValidEntry(password)) return false;
         return authenticateUser(username, password.hashCode());
@@ -81,9 +83,9 @@ public class TetrisDatabase {
             stmt = c.createStatement();
 
             String cmd = "SELECT COUNT(*) FROM USERS WHERE" +
-                            " USERNAME='" + username + "'" +
+                            " USERNAME = '" + username + "'" +
                             " AND" +
-                            " PASSWORD=" + password + ";";
+                            " PASSWORD = " + password + ";";
             // System.out.println(cmd);
             ResultSet r = stmt.executeQuery(cmd);
             
@@ -103,9 +105,125 @@ public class TetrisDatabase {
         //makes sure alphanumeric
         return s.matches("^[a-zA-Z0-9]*$");
     }
+    public static int[] getStats(String username){
+        Connection c = null;
+        Statement stmt = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:tetris.db");
+            stmt = c.createStatement();
 
+
+            String cmd = "SELECT NUM_WINS FROM USERS" + 
+                            " WHERE USERNAME = '" + username + "';";
+            ResultSet r = stmt.executeQuery(cmd);
+            int numwins = r.getInt(1);
+
+            cmd = "SELECT NUM_GAMES FROM USERS" + 
+                    " WHERE USERNAME = '" + username + "';";
+            r = stmt.executeQuery(cmd);
+            int numgames = r.getInt(1);
+
+            cmd = "SELECT HIGHSCORE FROM USERS" + 
+                    " WHERE USERNAME = '" + username + "';";
+            r = stmt.executeQuery(cmd);
+            int highscore = r.getInt(1);
+
+            stmt.close();
+            c.close();
+
+            int[] stats = new int[3];
+            stats[0] = numwins;
+            stats[1] = numgames;
+            stats[2] = highscore;
+            return stats;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+    public static void addGame(String username, boolean isWin){
+        addGame(username, isWin, -1);
+    }
+    public static void addGame(String username, boolean isWin, int score){
+        Connection c = null;
+        Statement stmt = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:tetris.db");
+            stmt = c.createStatement();
+
+            //updates numgames
+            String cmd = "UPDATE USERS SET NUM_GAMES = NUM_GAMES + 1" +
+                            " WHERE USERNAME = '" + username + "';";
+            stmt.executeUpdate(cmd);
+            
+            //updates numwins
+            if(isWin){
+                cmd = "UPDATE USERS SET NUM_WINS = NUM_WINS + 1" +
+                        " WHERE USERNAME = '" + username + "';";
+                stmt.executeUpdate(cmd);
+            }
+
+            //checks highscore and updates if necessary
+            cmd = "SELECT HIGHSCORE FROM USERS" + 
+                    " WHERE USERNAME = '" + username + "';";
+            ResultSet r = stmt.executeQuery(cmd);
+            int currHS = r.getInt(1);
+            if(currHS < score){
+                cmd = "UPDATE USERS SET HIGHSCORE = " + score + 
+                        " WHERE USERNAME = '" + username + "';";
+                stmt.executeUpdate(cmd);
+            }
+
+            stmt.close();
+            c.close();
+        }
+        catch (Exception e){
+            // e.printStackTrace();
+        }
+    }
+    public static String[] getLeaderboard(){
+        return getLeaderboard(10);
+    }
+    public static String[] getLeaderboard(int n){
+
+        Connection c = null;
+        Statement stmt = null;
+        try{
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:tetris.db");
+            stmt = c.createStatement();
+
+            //checks highscore and updates if necessary
+            String cmd = "SELECT USERNAME, HIGHSCORE FROM USERS" +
+            " ORDER BY HIGHSCORE DESC, USERNAME ASC" +
+            " LIMIT " + n + ";";
+            ResultSet r = stmt.executeQuery(cmd);
+            int currHS = r.getInt(1);
+
+            String ret = "";
+            while(r.next()) {
+                for(int i = 1; i <= 2; i++){           
+                    ret += r.getString(i) + " ";
+                } 
+                ret += "\n";
+            }
+            System.out.println(ret);
+
+            // r.getArray(1);
+            stmt.close();
+            c.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+
+    }
     public static void main(String args[]){
         createDB();
+        /*
         if(addUser("bob", "yoy1")) System.out.println("successfully added user");
         else System.out.println("error: user already exists // invalid credentials");
 
@@ -114,5 +232,18 @@ public class TetrisDatabase {
 
         if(authenticateUser("bob", "yoy1")) System.out.println("good credentials");
         else System.out.println("bad credentials");
+        addGame("bob", false, 100);
+        */
+        String[] users = {"apple", "banana", "carrot", "d", "eggs", "flour", "garbage", "heehee", "ice", "jyenni", "kitkat", "llama"};
+        for(int i = 0; i < users.length; i++){
+            addUser(users[i], users[i]);
+            addGame(users[i], true, 10*i);
+        }
+        addGame("apple", true, 100);
+        int[] stats = getStats("bob");
+        System.out.println(stats[0]);
+        System.out.println(stats[1]);
+        System.out.println(stats[2]);
+        getLeaderboard();
    }
 }
