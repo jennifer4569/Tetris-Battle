@@ -202,29 +202,42 @@ class TetrisServerHandler implements Runnable{
     }
 
     private void lose(String[] line){
+        opponent.opponentLose();
         opponent = null;
         inGame = false;
-        opponent.opponentLose();
         System.out.println(tName + ": LOSE success");
 
         //update db here
         try{
             int score = Integer.parseInt(line[1]);
+            TetrisDatabase.addGame(user, false, score);
         }
         catch(Exception e){
+            TetrisDatabase.addGame(user, false);
         }
     }
 
     public void opponentLose(){
         opponent = null;
-        inGame = false;
+        // inGame = false;
         
         out.println("OPPONENT LOSE");
         System.out.println(tName + ": OPPONENT LOSE success");
     }
 
-    private void win(String strScore){
+    private void win(String[] line){
+        opponent = null;
+        inGame = false;
 
+        System.out.println(tName + ": WIN success");
+        //update db here
+        try{
+            int score = Integer.parseInt(line[1]);
+            TetrisDatabase.addGame(user, true, score);
+        }
+        catch(Exception e){
+            TetrisDatabase.addGame(user, true);
+        }
     }
 
     public void run(){ 
@@ -262,6 +275,7 @@ class TetrisServerHandler implements Runnable{
                         if(line[0].equals("MOVE") && line.length >= 1) move(line[1]);
                         if(line[0].equals("SEND")) send();
                         if(line[0].equals("LOSE")) lose(line);
+                        if(line[0].equals("WIN")) win(line);
                     }
                 }
             }
