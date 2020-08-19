@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import main.*;
+
 public class Board extends JPanel implements ActionListener {
 
     private static final int BOARD_WIDTH = 10;
@@ -11,7 +13,6 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private boolean isFallingFinished = false;
     private boolean isStarted = false;
-    private boolean isPaused = false;
     private int numLinesRemoved = 0;
     private int curX = 0;
     private int curY = 0;
@@ -128,32 +129,12 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void start() {
-        if (isPaused)
-            return;
-
         isStarted = true;
         isFallingFinished = false;
         numLinesRemoved = 0;
         clearBoard();
         newPiece();
         timer.start();
-    }
-
-    public void pause() {
-        if (!isStarted)
-            return;
-
-        isPaused = !isPaused;
-
-        if (isPaused) {
-            timer.stop();
-            statusBar.setText("Paused");
-        } else {
-            timer.start();
-            statusBar.setText(String.valueOf(numLinesRemoved));
-        }
-
-        repaint();
     }
 
     private boolean tryMove(Shape newPiece, int newX, int newY) {
@@ -229,12 +210,6 @@ public class Board extends JPanel implements ActionListener {
                 return;
 
             int keyCode = ke.getKeyCode();
-
-            if (keyCode == 'p' || keyCode == 'P')
-                pause();
-
-            if (isPaused)
-                return;
 
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
