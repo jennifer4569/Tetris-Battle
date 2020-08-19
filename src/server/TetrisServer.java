@@ -8,12 +8,11 @@ public class TetrisServer{
 
     public static void main(String[] args){
         try{
-            int port = 8123;
+            int port = 8080;
             ServerSocket s = new ServerSocket(port, MAX_CLIENTS);
             ArrayList<TetrisServerHandler> matchmakingQueue = new ArrayList<TetrisServerHandler>(); //yeah ik its not a queue 5hed
             Object queueLock = new Object();
             while(true){
-                // System.out.println("Waiting for Connection...");
                 Socket socket = s.accept();            
                 System.out.println("SERVER: Client connected");
    
