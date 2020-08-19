@@ -4,6 +4,9 @@ import java.util.*;
 import java.sql.*;
 
 public class TetrisDatabase {
+    public static int MIN_ENTRY_SIZE = 5;
+    public static int MAX_ENTRY_SIZE = 20;
+
     public static boolean createDB(){
         Connection c = null;
         Statement stmt = null;
@@ -100,11 +103,19 @@ public class TetrisDatabase {
             return false;
         }
     }
-    public static boolean isValidEntry(String s){
-        if(s == null || s.length() > 50 ) return false;
+    public static boolean checkEntrySize(String s){
+        return MIN_ENTRY_SIZE <= s.length() && s.length() <= MAX_ENTRY_SIZE;
+    }
+
+    public static boolean checkEntryChars(String s){
         //makes sure alphanumeric
         return s.matches("^[a-zA-Z0-9]*$");
     }
+
+    public static boolean isValidEntry(String s){
+        return checkEntrySize(s) && checkEntryChars(s);
+    }
+
     public static int[] getStats(String username){
         Connection c = null;
         Statement stmt = null;
