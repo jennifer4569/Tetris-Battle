@@ -65,7 +65,6 @@ public class TetrisDatabase {
             }
         }
         catch (Exception e){
-            // e.printStackTrace();
             return false;
         }
     }
@@ -242,7 +241,6 @@ public class TetrisDatabase {
         if(authenticateUser("bob", "yoy1")) System.out.println("good credentials");
         else System.out.println("bad credentials");
         addGame("bob", false, 100);
-        */
         String[] users = {"apple", "banana", "carrot", "d", "eggs", "flour", "garbage", "heehee", "ice", "jyenni", "kitkat", "llama"};
         for(int i = 0; i < users.length; i++){
             addUser(users[i], users[i]);
@@ -254,5 +252,6 @@ public class TetrisDatabase {
         System.out.println(stats[1]);
         System.out.println(stats[2]);
         getLeaderboard();
+	*/
    }
 }

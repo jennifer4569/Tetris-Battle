@@ -56,6 +56,7 @@ else
 	echo "Compiling server..."
     javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/server/*.java 
     echo "Running server..."
+	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/server/TetrisDatabase
 	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/server/TetrisServer
     fi
 
