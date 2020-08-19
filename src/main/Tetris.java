@@ -9,7 +9,52 @@ public class Tetris extends JFrame {
   private JLabel statusBar;
   protected TetrisClientHandler clientHandler;
 
+  private void initToolBar() {
+    JToolBar toolBar = new JToolBar();
+
+    JButton registerButton = new JButton("Register");
+    registerButton.addActionListener((event) -> {
+      JTextField field1 = new JTextField();
+      JTextField field2 = new JTextField();
+      JPanel panel = new JPanel(new GridLayout(0, 1));
+      panel.add(new JLabel("Username:"));
+      panel.add(field1);
+      panel.add(new JLabel("Password:"));
+      panel.add(field2);
+      int result = JOptionPane.showConfirmDialog(null, panel, "Register", JOptionPane.OK_CANCEL_OPTION,
+          JOptionPane.PLAIN_MESSAGE);
+      if (result == JOptionPane.OK_OPTION) {
+        clientHandler.register(field1.getText(), field2.getText());
+      } else {
+        System.out.println("Cancelled");
+      }
+    });
+    toolBar.add(registerButton);
+
+    JButton loginButton = new JButton("Login");
+    loginButton.addActionListener((event) -> {
+      JTextField field1 = new JTextField();
+      JTextField field2 = new JTextField();
+      JPanel panel = new JPanel(new GridLayout(0, 1));
+      panel.add(new JLabel("Username:"));
+      panel.add(field1);
+      panel.add(new JLabel("Password:"));
+      panel.add(field2);
+      int result = JOptionPane.showConfirmDialog(null, panel, "Login", JOptionPane.OK_CANCEL_OPTION,
+          JOptionPane.PLAIN_MESSAGE);
+      if (result == JOptionPane.OK_OPTION) {
+        clientHandler.login(field1.getText(), field2.getText());
+      } else {
+        System.out.println("Cancelled");
+      }
+    });
+    toolBar.add(loginButton);
+
+    add(toolBar, BorderLayout.NORTH);
+  }
+
   public Tetris() {
+
     try {
       String server = "localhost";
       int port = 8080;
@@ -24,6 +69,8 @@ public class Tetris extends JFrame {
       e.printStackTrace();
     }
 
+    initToolBar();
+
     statusBar = new JLabel("0");
     add(statusBar, BorderLayout.SOUTH);
 
@@ -31,7 +78,7 @@ public class Tetris extends JFrame {
 
     Board board = new Board(this, true);
     panel.add(board);
-    board.start();
+    // board.start();
 
     Board oppBoard = new Board(this, false);
     oppBoard.setBackground(Color.LIGHT_GRAY);
@@ -51,11 +98,14 @@ public class Tetris extends JFrame {
 
   public static void main(String[] args) {
 
-    Tetris myTetris = new Tetris();
-    myTetris.setSize(750, 750);
-    myTetris.setLocation(0, 0);
-    myTetris.setVisible(true);
-
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        Tetris myTetris = new Tetris();
+        myTetris.setSize(750, 750);
+        myTetris.setLocation(0, 0);
+        myTetris.setVisible(true);
+      }
+    });
   }
 
 }
