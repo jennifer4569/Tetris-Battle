@@ -13,11 +13,11 @@ public class Tetris extends JFrame {
 
     JPanel panel = new JPanel();
 
-    Board board = new Board(this);
+    Board board = new Board(this, true);
     panel.add(board);
     board.start();
 
-    Board oppBoard = new Board(this);
+    Board oppBoard = new Board(this, false);
     oppBoard.setBackground(Color.LIGHT_GRAY);
     panel.add(oppBoard);
 

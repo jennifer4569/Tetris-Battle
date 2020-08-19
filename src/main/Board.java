@@ -20,14 +20,14 @@ public class Board extends JPanel implements ActionListener {
     private Shape curPiece;
     private Tetromino[] board;
 
-    public Board(Tetris parent) {
+    public Board(Tetris parent, boolean player) {
         setFocusable(true);
         curPiece = new Shape();
         timer = new Timer(400, this); // timer for lines down
         statusBar = parent.getStatusBar();
         board = new Tetromino[BOARD_WIDTH * BOARD_HEIGHT];
         clearBoard();
-        addKeyListener(new TetrisKeyAdapter());
+        if (player) addKeyListener(new TetrisKeyAdapter());
     }
 
     public int squareWidth() {
