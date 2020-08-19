@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import main.*;
+// import main.*;
 
 public class Board extends JPanel implements ActionListener {
 

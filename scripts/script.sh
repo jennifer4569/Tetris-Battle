@@ -8,7 +8,7 @@ then
 else
     if [ $1 != "compile" ] && [ $1 != "run" ]
     then
-	if [ $1 != "clean" ]
+	if [ $1 != "clean" ] && [ $1 != "server" ]
 	then
 	    show_help=1
 	fi
@@ -38,38 +38,25 @@ else
     #compiles program and javadocs
     if [ $1 = "compile" ]
     then
-        if [ $# -eq 1 ]
-        then
-            echo "Compiling program..."
-            javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/*.java 
-            echo "Compiling javadocs..."
-            javadoc -cp "lib/sqlite-jdbc-3.30.1.jar:." -author -version -d docs src/main/*.java 
-        else
-            if [ $2 = "program" ]
-            then
-                echo "Compiling program..."
-                javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/*.java
-            else
-                if [ $2 = "javadocs" ]
-                then
-                    echo "Compiling javadocs..."
-                    javadoc -cp "lib/sqlite-jdbc-3.30.1.jar:." -author -version -d docs src/main/*.java 
-                else
-                    #assumes that flag was typo
-                    echo "Compiling program..."
-                    javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/*.java
-                    echo "Compiling javadocs..."
-                    javadoc -cp "lib/sqlite-jdbc-3.30.1.jar:." -author -version -d docs src/main/*.java 
-                fi
-            fi               
-        fi
+        echo "Compiling program..."
+        javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/*.java 
+        echo "Compiling javadocs..."
+        javadoc -cp "lib/sqlite-jdbc-3.30.1.jar:." -author -version -d docs src/main/*.java src/server/*.java
     fi
 
     #runs program
     if [ $1 = "run" ]
     then
 	echo "Running program..."
-	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/TetrisDatabase
+	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/main/Tetris
+    fi
+
+    if [ $1 = "server" ]
+    then
+	echo "Compiling server..."
+    javac -cp "lib/sqlite-jdbc-3.30.1.jar:." src/server/*.java 
+    echo "Running server..."
+	java -cp "lib/sqlite-jdbc-3.30.1.jar:." src/server/TetrisServer
     fi
 
     #clean
@@ -77,7 +64,7 @@ else
     then
 	echo "Cleaning directories..."
 	rm -rf src/main/*.class
-	rm -rf src/psoft/*.class
+	rm -rf src/server/*.class
 	
 	#removing javadocs files
 	rm -rf docs/*.html docs/*.js docs/*.zip docs/*.css
