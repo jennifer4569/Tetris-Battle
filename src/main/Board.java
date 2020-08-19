@@ -18,16 +18,19 @@ public class Board extends JPanel implements ActionListener {
     private int curY = 0;
     private JLabel statusBar;
     private Shape curPiece;
+    private Tetris parent;
     private Tetromino[] board;
 
-    public Board(Tetris parent, boolean player) {
+    public Board(Tetris newParent, boolean player) {
         setFocusable(true);
         curPiece = new Shape();
         timer = new Timer(400, this); // timer for lines down
-        statusBar = parent.getStatusBar();
+        parent = newParent;
+        statusBar = newParent.getStatusBar();
         board = new Tetromino[BOARD_WIDTH * BOARD_HEIGHT];
         clearBoard();
-        if (player) addKeyListener(new TetrisKeyAdapter());
+        if (player)
+            addKeyListener(new TetrisKeyAdapter());
     }
 
     public int squareWidth() {
@@ -210,6 +213,7 @@ public class Board extends JPanel implements ActionListener {
                 return;
 
             int keyCode = ke.getKeyCode();
+            parent.clientHandler.move(keyCode);
 
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
