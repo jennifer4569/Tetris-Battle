@@ -1,4 +1,4 @@
-package src.main;
+package src.server;
 
 import java.util.*;
 import java.sql.*;

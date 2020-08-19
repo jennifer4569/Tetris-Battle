@@ -1,4 +1,4 @@
-package src.main;
+package src.server;
 
 public class Pair<K,V> {
 
