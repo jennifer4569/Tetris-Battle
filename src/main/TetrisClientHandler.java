@@ -5,48 +5,111 @@ import java.io.*;
 import java.util.*;
 
 public class TetrisClientHandler implements Runnable{
-    public TetrisClientHandler(Socket s){
+    Socket socket;
+    PrintWriter out;
 
+    boolean inGame;
+    public TetrisClientHandler(Socket s){
+        socket = s;
+        inGame = false;
+    }
+
+    public void register(String username, String password){
+        out.println("REGISTER " + username + " " + password.hashCode());
+    }
+    public void login(String username, String password){
+        out.println("LOGIN " + username + " " + password.hashCode());
+    }
+    public void leaderboard(){
+        out.println("LEADERBOARD");
+    }
+    public void leaderboard(int n){
+        out.println("LEADERBOARD " + n);
+    }
+    public void play(){
+        out.println("PLAY");
+    }
+    public void move(int keyCode){
+        out.println("MOVE " + keyCode);
+    }
+    public void piece(int piece){
+        out.println("PIECE " + piece);
+    }
+    public void send(){
+        out.println("SEND");   
+    }
+    public void lose(int score){
+        out.println("LOSE " + score);
+        inGame = false;
     }
     public void run(){
+        try{        
 
+            InputStream inStream = socket.getInputStream();
+            OutputStream outStream = socket.getOutputStream();
+            
+            Scanner in = new Scanner(inStream);         
+            out = new PrintWriter(outStream, true); //autoflush
+            while(in.hasNextLine()){
+                String[] line = in.nextLine().split(" ");
+                if(line.length == 0) continue;
+                
+                if(line[0].equals("FAILURE")){
+                    //failed register/login attempt
+                }
+                if(line[0].equals("SUCCESS")){
+                    //successful register/login attempt
+                }
+
+                if(line[0].equals("LEADERBOARD")){
+                    //leaderboard stuff here
+                }
+
+                if(line[0].equals("MATCH")){
+                    //match found
+                    inGame = true;
+                }
+
+                if(line[0].equals("SENT")){
+                    //server gives u the line u sent to the opponent
+                }
+
+                if(line[0].equals("OPPONENT") && line.length > 1){
+                    //OPPONENT MOVE, PIECE, SEND, LOSE
+                    if(line[1].equals("MOVE")){
+                        //opponent pressed key
+                    }
+                    if(line[1].equals("PIECE")){
+                        //opponent's next piece
+                    }
+                    if(line[1].equals("SEND")){
+                        //opponent sent line
+                    }
+                    if(line[1].equals("LOSE")){
+                        //opponent lost
+                        inGame = false;
+                        int score = 0; //replace score with actual score thanks
+                        out.println("WIN " + score);
+                    }
+                }
+            }
+        }
+        catch (IOException e){
+        }
     }
     public static void main(String[] args){
         try{
             String server = "localhost";
             int port = 8080;
 
-            int i = 0;
-
-
-            System.out.println(i);
-            i++;
-
             Socket socket = new Socket(server, port);
 
-            System.out.println(i);
-            i++;
-
-
-
-
-            InputStream inStream = socket.getInputStream();
-            OutputStream outStream = socket.getOutputStream();
-            
-            Scanner in = new Scanner(inStream);         
-            PrintWriter out = new PrintWriter(outStream, true); //autoflush
-
-            System.out.println(i);
-            i++;
-            out.println("REGISTER JENNI WORLD");
-            System.out.println(i);
-            i++;
-            // TetrisClientHandler clientHandler = new TetrisClientHandler(socket);
-            // Thread t = new Thread(clientHandler);
-            // t.start();
+            TetrisClientHandler clientHandler = new TetrisClientHandler(socket);
+            Thread t = new Thread(clientHandler);
+            t.start();
         }
         catch(Exception e){
-System.out.println("wot");
+            e.printStackTrace();
         }
     }
 }

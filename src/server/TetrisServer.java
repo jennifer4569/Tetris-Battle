@@ -84,7 +84,7 @@ class TetrisServerHandler implements Runnable{
         }
         else{
             user = username;
-            out.println("SUCCESS");
+            out.println("SUCCESS 0 0 0");
             System.out.println(tName + ": REGISTER success, User " + user);
             return true;
         }
@@ -188,6 +188,16 @@ class TetrisServerHandler implements Runnable{
         System.out.println(tName + ": OPPONENT MOVE success, " + keyPressed);
     }
 
+    private void piece(String piece){
+        opponent.opponentPiece(piece);
+        System.out.println(tName + ": PIECE success, " + piece);        
+    }
+
+    public void opponentPiece(String piece){
+        out.println("OPPONENT PIECE " + piece);
+        System.out.println(tName + ": OPPONENT PIECE success, " + piece);
+    }
+
     private void send(){
         String line = "XXXXXXX.X"; //rng this later
         opponent.opponentSend(line);
@@ -242,10 +252,6 @@ class TetrisServerHandler implements Runnable{
     public void run(){ 
         tName = Thread.currentThread().getName();
         System.out.println("SERVER: Created thread " + tName);
- 
-        // Thread currentThread = Thread.currentThread();
-        // System.out.println("Executing  thread : " + currentThread.getName()) ;
-        // System.out.println("id of the thread is " + currentThread.getId());   
 
         try{        
 
@@ -261,8 +267,8 @@ class TetrisServerHandler implements Runnable{
                 
                 //if not logged in
                 if(user == null){
-                    if(line[0].equals("REGISTER") && line.length >= 2) register(line);
-                    if(line[0].equals("LOGIN") && line.length >= 2) login(line);
+                    if(line[0].equals("REGISTER") && line.length > 2) register(line);
+                    if(line[0].equals("LOGIN") && line.length > 2) login(line);
                 }
 
                 if(line[0].equals("LEADERBOARD")) leaderboard(line);
@@ -271,7 +277,8 @@ class TetrisServerHandler implements Runnable{
                 if(user != null){
                     if(line[0].equals("PLAY") && !inQueue && !inGame) play();
                     if(inGame){
-                        if(line[0].equals("MOVE") && line.length >= 1) move(line[1]);
+                        if(line[0].equals("MOVE") && line.length > 1) move(line[1]);
+                        if(line[0].equals("PIECE") && line.length > 1) piece(line[1]);
                         if(line[0].equals("SEND")) send();
                         if(line[0].equals("LOSE")) lose(line);
                         if(line[0].equals("WIN")) win(line);
