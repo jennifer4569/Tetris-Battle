@@ -73,7 +73,7 @@ class TetrisServerHandler implements Runnable {
         // invalid username
         if (!TetrisDatabase.isValidEntry(username)) {
             out.println("FAILURE INVALID");
-            System.out.println(tName + ": REGISTER failed,  credentials invalid");
+            System.out.println(tName + ": REGISTER failed, credentials invalid");
             return false;
         }
 
@@ -84,7 +84,7 @@ class TetrisServerHandler implements Runnable {
             return false;
         } else {
             user = username;
-            out.println("SUCCESS 0 0 0");
+            out.println("SUCCESS " + user + " 0 0 0");
             System.out.println(tName + ": REGISTER success, User " + user);
             return true;
         }
@@ -121,7 +121,7 @@ class TetrisServerHandler implements Runnable {
             return false;
         } else {
             user = username;
-            out.println("SUCCESS " + getStatsStr());
+            out.println("SUCCESS " + user + " " + getStatsStr());
             System.out.println(tName + ": LOGIN success, User " + user);
             return true;
         }

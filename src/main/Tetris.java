@@ -55,8 +55,14 @@ public class Tetris extends JFrame {
 
   public Tetris() {
 
+    try { 
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } 
+    catch (Exception e) {
+    }
+
     try {
-      String server = "localhost";
+      String server = "67.205.133.16";
       int port = 8080;
 
       Socket socket = new Socket(server, port);
