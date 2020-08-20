@@ -64,9 +64,9 @@ public class Board extends JPanel implements ActionListener {
             currY++;
         }
 
-        for (int i = BOARD_HEIGHT - 2; i >= 0; --i) {
+        for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
             for (int j = 0; j < BOARD_WIDTH; ++j) {
-                board[i * BOARD_WIDTH + j] = shapeAt(j, i + 1);
+                board[i * BOARD_WIDTH + j] = shapeAt(j, i - 1);
             }
         }
 
