@@ -327,5 +327,11 @@ class TetrisServerHandler implements Runnable {
         } catch (IOException e) {
         }
         System.out.println(tName + ": Client disconnected");
+        
+        if(user != null){
+            synchronized(loggedLock){
+                loggedUsers.remove(user);
+            }
+        }
     }
 }
