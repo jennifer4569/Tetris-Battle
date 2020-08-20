@@ -8,6 +8,9 @@ public class Tetris extends JFrame {
 
     private JLabel statusBar;
     protected TetrisClientHandler clientHandler;
+    protected boolean logged;
+
+    private Board board, oppBoard;
 
     private void initToolBar() {
         JToolBar toolBar = new JToolBar();
@@ -50,10 +53,21 @@ public class Tetris extends JFrame {
         });
         toolBar.add(loginButton);
 
+        JButton playButton = new JButton("Play");
+        playButton.addActionListener((event) -> {
+            if (logged) {
+            clientHandler.play();
+            } else {
+                JOptionPane.showMessageDialog(null, "You must be logged in to play!");
+            }
+        });
+
         add(toolBar, BorderLayout.NORTH);
     }
 
     public Tetris() {
+
+        logged = false;
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -66,7 +80,7 @@ public class Tetris extends JFrame {
 
             Socket socket = new Socket(server, port);
 
-            clientHandler = new TetrisClientHandler(socket);
+            clientHandler = new TetrisClientHandler(socket, this);
             Thread t = new Thread(clientHandler);
             t.start();
 
@@ -81,11 +95,11 @@ public class Tetris extends JFrame {
 
         JPanel panel = new JPanel();
 
-        Board board = new Board(this, true);
+        board = new Board(this, true);
         panel.add(board);
         // board.start();
 
-        Board oppBoard = new Board(this, false);
+        oppBoard = new Board(this, false);
         oppBoard.setBackground(Color.LIGHT_GRAY);
         panel.add(oppBoard);
 
