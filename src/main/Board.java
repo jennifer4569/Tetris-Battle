@@ -248,16 +248,16 @@ public class Board extends JPanel implements ActionListener {
             }
 
             if (numFullLines > 0) {
-                if (numFullLines > 1) {
-                    for (int k = 0; k < numFullLines - 1; k++) {
-                        parent.clientHandler.send();
-                    }
-                }
                 numLinesRemoved += numFullLines;
                 statusBar.setText(String.valueOf(numLinesRemoved));
                 isFallingFinished = true;
                 currPiece.setShape(Tetromino.NoShape);
                 repaint();
+            }
+        }
+        if (numFullLines > 1) {
+            for (int k = 0; k < numFullLines - 1; k++) {
+                parent.clientHandler.send();
             }
         }
     }

@@ -64,9 +64,23 @@ public class Tetris extends JFrame {
         });
         toolBar.add(playButton);
 
+        JButton leaderboardButton = new JButton("Leaderboard");
+        leaderboardButton.addActionListener((event) -> {
+            clientHandler.leaderboard();
+        });
+        toolBar.add(leaderboardButton);
+
+        JButton statsButton = new JButton("Stats");
+        statsButton.addActionListener((event) -> {
+            // message dialog with stats goes here
+        });
+        toolBar.add(statsButton);
+
         registerButton.setFocusable(false);
         loginButton.setFocusable(false);
         playButton.setFocusable(false);
+        leaderboardButton.setFocusable(false);
+        statsButton.setFocusable(false);
 
         add(toolBar, BorderLayout.NORTH);
     }
