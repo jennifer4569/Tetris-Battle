@@ -20,8 +20,9 @@ public class Board extends JPanel implements ActionListener {
     private Shape currPiece;
     private Tetris parent;
     private Tetromino[] board;
-
-    public Board(Tetris newParent, boolean player) {
+    private boolean player;
+    public Board(Tetris newParent, boolean p) {
+        player = p;
         setFocusable(true);
         timer = new Timer(400, this); // timer for lines down
         currPiece = new Shape(0);
@@ -70,22 +71,40 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void newPiece() {
-        int x = currPiece.setRandomShape();
-        currX = BOARD_WIDTH / 2 + 1;
-        currY = BOARD_HEIGHT - 1 + currPiece.minY();
+        if(player){
+            int x = currPiece.setRandomShape();
+            currX = BOARD_WIDTH / 2 + 1;
+            currY = BOARD_HEIGHT - 1 + currPiece.minY();
 
-        parent.clientHandler.piece(x);
+            parent.clientHandler.piece(x);
 
-        if (!tryMove(currPiece, currX, currY - 1)) {
-            currPiece.setShape(Tetromino.NoShape);
-            timer.stop();
-            isStarted = false;
-            statusBar.setText("Game Over");
+            if (!tryMove(currPiece, currX, currY - 1)) {
+                currPiece.setShape(Tetromino.NoShape);
+                timer.stop();
+                isStarted = false;
+                statusBar.setText("Game Over");
 
-            parent.clientHandler.lose(numLinesRemoved);
+                parent.clientHandler.lose(numLinesRemoved);
+            }
         }
     }
 
+    public void newPiece(int p){
+        if(!player){
+            currPiece.setShape(p);
+            currX = BOARD_WIDTH / 2 + 1;
+            currY = BOARD_HEIGHT - 1 + currPiece.minY();
+
+            if (!tryMove(currPiece, currX, currY - 1)) {
+                currPiece.setShape(Tetromino.NoShape);
+                timer.stop();
+                isStarted = false;
+                statusBar.setText("Game Over");
+
+                parent.clientHandler.lose(numLinesRemoved);
+            }
+        }
+    }
     private void oneLineDown() {
         if (!tryMove(currPiece, currX, currY - 1))
             pieceDropped();
@@ -214,7 +233,32 @@ public class Board extends JPanel implements ActionListener {
 
         pieceDropped();
     }
+    public void movePiece(int keyCode){
+        if (!isStarted || currPiece.getShape() == Tetromino.NoShape)
+            return;
 
+        switch (keyCode) {
+            case KeyEvent.VK_LEFT:
+                tryMove(currPiece, currX - 1, currY);
+                break;
+            case KeyEvent.VK_RIGHT:
+                tryMove(currPiece, currX + 1, currY);
+                break;
+            case KeyEvent.VK_DOWN:
+                tryMove(currPiece.rotateRight(), currX, currY);
+                break;
+            case KeyEvent.VK_UP:
+                tryMove(currPiece.rotateLeft(), currX, currY);
+                break;
+            case KeyEvent.VK_SPACE:
+                dropDown();
+                break;
+            case 'd':
+            case 'D':
+                oneLineDown();
+                break;
+        }
+    }
     class TetrisKeyAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent ke) {

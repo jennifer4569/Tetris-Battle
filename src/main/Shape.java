@@ -69,6 +69,11 @@ public class Shape {
         setShape(values[x]);
         return x;
     }
+    
+    public void setShape(int x) {
+        Tetromino[] values = Tetromino.values();
+        setShape(values[x]);
+    }
 
     public int minX() {
         int m = coords[0][0];

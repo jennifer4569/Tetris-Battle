@@ -127,6 +127,7 @@ public class Tetris extends JFrame {
 
     public void startGame(long seed) {
         board.start(seed);
+        oppBoard.start(seed);
     }
 
     public static void main(String[] args) {

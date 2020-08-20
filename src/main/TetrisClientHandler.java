@@ -103,9 +103,11 @@ public class TetrisClientHandler implements Runnable {
                     // OPPONENT MOVE, PIECE, SEND, LOSE
                     if (line[1].equals("MOVE")) {
                         // opponent pressed key
+                        tetris.oppBoard.movePiece(Integer.parseInt(line[2]));
                     }
                     if (line[1].equals("PIECE")) {
                         // opponent's next piece
+                        tetris.oppBoard.newPiece(Integer.parseInt(line[2]));
                     }
                     if (line[1].equals("SEND")) {
                         // opponent sent line
@@ -115,6 +117,9 @@ public class TetrisClientHandler implements Runnable {
                         inGame = false;
                         int score = 0; // replace score with actual score thanks
                         out.println("WIN " + score);
+                        JOptionPane.showMessageDialog(null, "You won!");
+                        tetris.board.clearBoard();
+                        tetirs.oppBoard.clearBoard();
                     }
                 }
             }
