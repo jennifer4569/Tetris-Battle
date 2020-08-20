@@ -208,7 +208,8 @@ class TetrisServerHandler implements Runnable {
     }
 
     private void lose(String[] line) {
-        opponent.opponentLose();
+        if(opponent != null)
+            opponent.opponentLose();
         opponent = null;
         inGame = false;
         System.out.println(tName + ": LOSE success");
