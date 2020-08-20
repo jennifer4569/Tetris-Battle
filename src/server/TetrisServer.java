@@ -206,13 +206,13 @@ class TetrisServerHandler implements Runnable {
         else numHoles = 3;
 
         while(numHoles != 0){
-            int i = r.nextInt(line.length);
-            if(line[i] == 'X'){
-                line[i] = '.';
+            int i = r.nextInt(10);
+            if(line.charAt(i)== 'X'){
+                line = line.substring(0,i)+'.'+line.substring(i+1);
                 numHoles--;
             }
         }
-        
+
         opponent.opponentSend(line);
         out.println("SENT " + line);
         System.out.println(tName + ": SEND success, " + line);
