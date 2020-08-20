@@ -43,12 +43,12 @@ final class Tetromino {
 public class Shape {
     private Tetromino pieceShape;
     private int[][] coords;
-    private MyRandom rand;
+    public Random rand;
 
     public Shape(long seed) {
         coords = new int[4][2];
         setShape(Tetromino.NoShape);
-        rand = new MyRandom(seed);
+        rand = new Random(seed);
     }
 
     public void setShape(Tetromino shape) {

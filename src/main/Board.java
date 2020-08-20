@@ -215,6 +215,7 @@ public class Board extends JPanel implements ActionListener {
                 return false;
         }
 
+        newPiece.rand = currPiece.rand;
         currPiece = newPiece;
         currX = newX;
         currY = newY;
