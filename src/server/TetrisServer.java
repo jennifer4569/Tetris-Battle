@@ -196,7 +196,23 @@ class TetrisServerHandler implements Runnable {
     }
 
     private void send() {
-        String line = "XXXXXXX.X"; // rng this later
+        String line = "XXXXXXXXXX";
+        
+        Random r = new Random();
+        Double p = r.nextDouble();
+        int numHoles = 0;
+        if(p < 0.3) numHoles = 1;
+        else if(p < 0.7) numHoles = 2;
+        else numHoles = 3;
+
+        while(numHoles != 0){
+            int i = r.nextInt(line.length);
+            if(line[i] == 'X'){
+                line[i] = '.';
+                numHoles--;
+            }
+        }
+        
         opponent.opponentSend(line);
         out.println("SENT " + line);
         System.out.println(tName + ": SEND success, " + line);
