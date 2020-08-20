@@ -116,6 +116,9 @@ public class Tetris extends JFrame {
         return statusBar;
     }
 
+    public void startGame(){
+        board.start();
+    }
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {

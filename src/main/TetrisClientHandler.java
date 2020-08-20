@@ -90,6 +90,9 @@ public class TetrisClientHandler implements Runnable {
                 if (line[0].equals("MATCH")) {
                     // match found
                     inGame = true;
+                    tetris.startGame();
+                    JOptionPane.showMessageDialog(null, "Opponent found: " + line[1]);
+                    //seed = line[5]
                 }
 
                 if (line[0].equals("SENT")) {
