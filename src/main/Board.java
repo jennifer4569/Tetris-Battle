@@ -255,7 +255,7 @@ public class Board extends JPanel implements ActionListener {
                 repaint();
             }
         }
-        if (numFullLines > 1) {
+        if (numFullLines > 1 && player) {
             for (int k = 0; k < numFullLines - 1; k++) {
                 parent.clientHandler.send();
             }

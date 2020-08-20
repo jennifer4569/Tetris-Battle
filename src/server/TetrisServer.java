@@ -12,12 +12,14 @@ public class TetrisServer {
             int port = 8080;
             ServerSocket s = new ServerSocket(port, MAX_CLIENTS);
             LinkedList<TetrisServerHandler> matchmakingQueue = new LinkedList<TetrisServerHandler>(); 
+            LinkedHashSet<String> loggedUsers = new LinkedHashSet<String>();
             Object queueLock = new Object();
+            Object loggedLock = new Object();
             while (true) {
                 Socket socket = s.accept();
                 System.out.println("SERVER: Client connected");
 
-                TetrisServerHandler serverHandler = new TetrisServerHandler(socket, matchmakingQueue, queueLock);
+                TetrisServerHandler serverHandler = new TetrisServerHandler(socket, matchmakingQueue, queueLock, loggedUsers, loggedLock);
                 Thread t = new Thread(serverHandler);
                 t.start();
             }
@@ -35,17 +37,20 @@ class TetrisServerHandler implements Runnable {
     boolean inQueue;
     boolean inGame;
     TetrisServerHandler opponent;
-
     PrintWriter out;
+    LinkedHashSet<String> loggedUsers;
+    Object loggedLock;
 
-    public TetrisServerHandler(Socket s, LinkedList<TetrisServerHandler> q, Object l) {
+    public TetrisServerHandler(Socket s, LinkedList<TetrisServerHandler> q, Object ql, LinkedHashSet<String> u, Object ll) {
         socket = s;
         user = null;
         matchmakingQueue = q;
-        queueLock = l;
+        queueLock = ql;
         inQueue = false;
         inGame = false;
         opponent = null;
+        loggedUsers = u;
+        loggedLock = ll;
     }
 
     public String getName() {
@@ -119,10 +124,20 @@ class TetrisServerHandler implements Runnable {
             System.out.println(tName + ": LOGIN failed, credentials incorrect");
             return false;
         } else {
-            user = username;
-            out.println("SUCCESS " + user + " " + getStatsStr());
-            System.out.println(tName + ": LOGIN success, User " + user);
-            return true;
+            synchronized(loggedLock){
+                if(loggedUsers.contains(username)){
+                    out.println("FAILURE LOGGED");
+                    System.out.println(tName + ": LOGIN failed, user already logged in");
+                    return false;
+                }
+                else{
+                    loggedUsers.add(username);
+                    user = username;
+                    out.println("SUCCESS " + user + " " + getStatsStr());
+                    System.out.println(tName + ": LOGIN success, User " + user);
+                    return true;
+                }
+            }
         }
     }
 

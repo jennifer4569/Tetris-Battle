@@ -69,7 +69,8 @@ public class TetrisClientHandler implements Runnable {
                 String[] line = in.nextLine().split(" ");
                 if (line.length == 0)
                     continue;
-                // System.out.println(line[0]);
+                if(!line[0].equals("OPPONENT"))
+                System.out.println(line[0]);
                 if (line[0].equals("FAILURE")) {
                     if(line.length > 1 && line[1].equals("INVALID"))
                         JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain only alphanumeric characters!");
@@ -77,6 +78,8 @@ public class TetrisClientHandler implements Runnable {
                         JOptionPane.showMessageDialog(null, "Error: Username taken!");
                     else if(line.length > 1 && line[1].equals("INCORRECT"))
                         JOptionPane.showMessageDialog(null, "Error: Incorrect login credentials!");
+                    else if(line.length > 1 && line[1].equals("LOGGED"))
+                        JOptionPane.showMessageDialog(null, "Error: User already logged in!");
                     else
                         JOptionPane.showMessageDialog(null, "Error: Could not validate credentials!");
                     // tetris.logged = false;
@@ -113,6 +116,7 @@ public class TetrisClientHandler implements Runnable {
 
                 if (line[0].equals("SENT")) {
                     // server gives u the line u sent to the opponent
+                    System.out.println("u sent line");
                     tetris.oppBoard.addLine(line[1]);
                 }
 
@@ -122,12 +126,16 @@ public class TetrisClientHandler implements Runnable {
                         // opponent pressed key
                         tetris.oppBoard.movePiece(Integer.parseInt(line[2]));
                     }
+                    else{
+                        System.out.println("OPPONENT " + line[1]);
+                    }
                     if (line[1].equals("PIECE")) {
                         // opponent's next piece
                         // tetris.oppBoard.newPiece(Integer.parseInt(line[2]));
                     }
                     if (line[1].equals("SEND")) {
                         // opponent sent line
+                        System.out.println("opponent sent line");
                         tetris.board.addLine(line[2]);
                     }
                     if (line[1].equals("LOSE")) {
