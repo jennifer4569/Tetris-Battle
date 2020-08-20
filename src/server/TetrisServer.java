@@ -161,7 +161,8 @@ class TetrisServerHandler implements Runnable {
         }
 
         if (opponent != null) {
-            long seed = (new Random()).nextLong();
+            // long seed = (new Random()).nextLong();
+            long seed = (long)Math.abs((new Random()).nextInt(100));
             this.match(seed, opponent);
             opponent.match(seed, this);
         }
