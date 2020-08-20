@@ -11,8 +11,7 @@ public class TetrisServer {
         try {
             int port = 8080;
             ServerSocket s = new ServerSocket(port, MAX_CLIENTS);
-            ArrayList<TetrisServerHandler> matchmakingQueue = new ArrayList<TetrisServerHandler>(); // yeah ik its not a
-                                                                                                    // queue 5hed
+            LinkedList<TetrisServerHandler> matchmakingQueue = new LinkedList<TetrisServerHandler>(); 
             Object queueLock = new Object();
             while (true) {
                 Socket socket = s.accept();
@@ -31,7 +30,7 @@ class TetrisServerHandler implements Runnable {
     Socket socket;
     String user;
     String tName;
-    ArrayList<TetrisServerHandler> matchmakingQueue;
+    LinkedList<TetrisServerHandler> matchmakingQueue;
     Object queueLock;
     boolean inQueue;
     boolean inGame;
@@ -39,7 +38,7 @@ class TetrisServerHandler implements Runnable {
 
     PrintWriter out;
 
-    public TetrisServerHandler(Socket s, ArrayList<TetrisServerHandler> q, Object l) {
+    public TetrisServerHandler(Socket s, LinkedList<TetrisServerHandler> q, Object l) {
         socket = s;
         user = null;
         matchmakingQueue = q;
@@ -152,13 +151,12 @@ class TetrisServerHandler implements Runnable {
 
     private void play() {
         synchronized (queueLock) {
-            if (matchmakingQueue.isEmpty()) {
+            if (matchmakingQueue.peek() == null) {
                 System.out.println(tName + ": PLAY awaiting, Added to matchmaking queue");
                 matchmakingQueue.add(this);
                 inQueue = true;
             } else {
-                opponent = matchmakingQueue.get(0);
-                matchmakingQueue.remove(0);
+                opponent = matchmakingQueue.poll();
             }
         }
 

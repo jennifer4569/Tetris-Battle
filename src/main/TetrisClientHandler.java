@@ -118,7 +118,7 @@ public class TetrisClientHandler implements Runnable {
                     if (line[1].equals("LOSE")) {
                         // opponent lost
                         inGame = false;
-                        int score = 0; // replace score with actual score thanks
+                        int score = tetris.board.getScore();
                         out.println("WIN " + score);
                         JOptionPane.showMessageDialog(null, "You won!");
                         tetris.board.stop();
