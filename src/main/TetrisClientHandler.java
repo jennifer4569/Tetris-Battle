@@ -8,10 +8,12 @@ public class TetrisClientHandler implements Runnable {
     Socket socket;
     PrintWriter out;
 
+    Tetris tetris;
     boolean inGame;
 
-    public TetrisClientHandler(Socket s) {
+    public TetrisClientHandler(Socket s, Tetris t) {
         socket = s;
+        tetris = t;
         inGame = false;
     }
 
@@ -68,13 +70,17 @@ public class TetrisClientHandler implements Runnable {
                 if (line[0].equals("FAILURE")) {
                     if(line.length > 1 && line[1].equals("INVALID"))
                         JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain only alphanumeric characters!");
-                    if(line.length > 1 && line[1].equals("TAKEN"))
+                    else if(line.length > 1 && line[1].equals("TAKEN"))
                         JOptionPane.showMessageDialog(null, "Error: Username taken!");
-                    if(line.length > 1 && line[1].equals("INCORRECT"))
+                    else if(line.length > 1 && line[1].equals("INCORRECT"))
                         JOptionPane.showMessageDialog(null, "Error: Incorrect login credentials!");
+                    else
+                        JOptionPane.showMessageDialog(null, "Error: Could not validate credentials!");
+                    // tetris.logged = false;
                 }
                 if (line[0].equals("SUCCESS")) {
                     JOptionPane.showMessageDialog(null, "Successfully logged in! Welcome, " + line[1]);
+                    tetris.logged = true;
                 }
 
                 if (line[0].equals("LEADERBOARD")) {
