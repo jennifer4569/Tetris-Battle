@@ -18,7 +18,7 @@ public class Tetris extends JFrame {
         JButton registerButton = new JButton("Register");
         registerButton.addActionListener((event) -> {
             JTextField field1 = new JTextField();
-            JTextField field2 = new JTextField();
+            JTextField field2 = new JPasswordField();
             JPanel panel = new JPanel(new GridLayout(0, 1));
             panel.add(new JLabel("Username:"));
             panel.add(field1);
@@ -37,7 +37,7 @@ public class Tetris extends JFrame {
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener((event) -> {
             JTextField field1 = new JTextField();
-            JTextField field2 = new JTextField();
+            JTextField field2 = new JPasswordField();
             JPanel panel = new JPanel(new GridLayout(0, 1));
             panel.add(new JLabel("Username:"));
             panel.add(field1);
