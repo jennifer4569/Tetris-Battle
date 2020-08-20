@@ -82,12 +82,21 @@ public class TetrisClientHandler implements Runnable {
                     // tetris.logged = false;
                 }
                 if (line[0].equals("SUCCESS")) {
+                    //line[2], line[3], line[4] are stats
                     JOptionPane.showMessageDialog(null, "Successfully logged in! Welcome, " + line[1]);
                     tetris.logged = true;
                 }
 
                 if (line[0].equals("LEADERBOARD")) {
                     // leaderboard stuff here
+                    String msg = "";
+                    for(int i = 1; i < line.length; i++){
+                        System.out.println(line[i]);
+                        // String user = line[i].substring(line[i].indexOf(','));
+                        // int score = Integer.parseInt(line[i].substring(line[i].indexOf(',')+1));
+                        // msg += String.format("%3d. %20s %10d", i, user, score);
+                    }
+                    JOptionPane.showMessageDialog(null, msg);
                 }
 
                 if (line[0].equals("MATCH")) {

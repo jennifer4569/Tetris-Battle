@@ -143,6 +143,7 @@ class TetrisServerHandler implements Runnable {
 
         String output = "LEADERBOARD";
         for (int i = 0; i < lb.length; i++) {
+            if(lb[i] == null) break;
             output += " " + lb[i];
         }
         out.println(output);
