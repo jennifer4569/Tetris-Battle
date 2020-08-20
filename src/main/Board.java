@@ -23,7 +23,6 @@ public class Board extends JPanel implements ActionListener {
 
     public Board(Tetris newParent, boolean player) {
         setFocusable(true);
-        curPiece = new Shape();
         timer = new Timer(400, this); // timer for lines down
         parent = newParent;
         statusBar = newParent.getStatusBar();
@@ -45,7 +44,7 @@ public class Board extends JPanel implements ActionListener {
         return board[y * BOARD_WIDTH + x];
     }
 
-    private void clearBoard() {
+    public void clearBoard() {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
             board[i] = Tetromino.NoShape;
         }
@@ -63,6 +62,10 @@ public class Board extends JPanel implements ActionListener {
         if (!isFallingFinished) {
             newPiece();
         }
+    }
+
+    public int getScore() {
+        return numLinesRemoved;
     }
 
     public void newPiece() {
@@ -135,7 +138,8 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
-    public void start() {
+    public void start(long seed) {
+        curPiece = new Shape(seed);
         isStarted = true;
         isFallingFinished = false;
         numLinesRemoved = 0;

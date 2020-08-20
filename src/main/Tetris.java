@@ -120,8 +120,12 @@ public class Tetris extends JFrame {
         return statusBar;
     }
 
-    public void startGame(){
-        board.start();
+    public int getScore() {
+        return board.getScore();
+    }
+
+    public void startGame(long seed){
+        board.start(seed);
     }
     public static void main(String[] args) {
 

@@ -25,10 +25,12 @@ enum Tetromino {
 public class Shape {
     private Tetromino pieceShape;
     private int[][] coords;
+    private Random rand;
 
-    public Shape() {
+    public Shape(long seed) {
         coords = new int[4][2];
         setShape(Tetromino.NoShape);
+        rand = new Random(seed);
     }
 
     public void setShape(Tetromino shape) {
@@ -62,8 +64,7 @@ public class Shape {
     }
 
     public int setRandomShape() {
-        Random r = new Random();
-        int x = Math.abs(r.nextInt()) % 7 + 1;
+        int x = Math.abs(rand.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setShape(values[x]);
         return x;
@@ -93,7 +94,7 @@ public class Shape {
         if (pieceShape == Tetromino.SquareShape)
             return this;
 
-        Shape result = new Shape();
+        Shape result = new Shape(0);
         result.pieceShape = pieceShape;
 
         for (int i = 0; i < 4; i++) {
@@ -108,7 +109,7 @@ public class Shape {
         if (pieceShape == Tetromino.SquareShape)
             return this;
 
-        Shape result = new Shape();
+        Shape result = new Shape(0);
         result.pieceShape = pieceShape;
 
         for (int i = 0; i < 4; i++) {
