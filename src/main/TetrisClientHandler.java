@@ -66,7 +66,7 @@ public class TetrisClientHandler implements Runnable {
                 String[] line = in.nextLine().split(" ");
                 if (line.length == 0)
                     continue;
-                System.out.println(line[0]);
+                // System.out.println(line[0]);
                 if (line[0].equals("FAILURE")) {
                     if(line.length > 1 && line[1].equals("INVALID"))
                         JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain only alphanumeric characters!");
@@ -120,8 +120,5 @@ public class TetrisClientHandler implements Runnable {
             }
         } catch (IOException e) {
         }
-    }
-
-    public static void main(String[] args) {
     }
 }
