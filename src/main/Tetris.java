@@ -10,7 +10,7 @@ public class Tetris extends JFrame {
     protected TetrisClientHandler clientHandler;
     protected boolean logged;
 
-    private Board board, oppBoard;
+    protected Board board, oppBoard;
 
     private void initToolBar() {
         JToolBar toolBar = new JToolBar();
@@ -25,7 +25,7 @@ public class Tetris extends JFrame {
             panel.add(new JLabel("Password:"));
             panel.add(field2);
             int result = JOptionPane.showConfirmDialog(null, panel, "Register", JOptionPane.OK_CANCEL_OPTION,
-                                                       JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 clientHandler.register(field1.getText(), field2.getText());
             } else {
@@ -44,7 +44,7 @@ public class Tetris extends JFrame {
             panel.add(new JLabel("Password:"));
             panel.add(field2);
             int result = JOptionPane.showConfirmDialog(null, panel, "Login", JOptionPane.OK_CANCEL_OPTION,
-                                                       JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.PLAIN_MESSAGE);
             if (result == JOptionPane.OK_OPTION) {
                 clientHandler.login(field1.getText(), field2.getText());
             } else {
@@ -56,7 +56,8 @@ public class Tetris extends JFrame {
         JButton playButton = new JButton("Play");
         playButton.addActionListener((event) -> {
             if (logged) {
-            clientHandler.play();
+                clientHandler.play();
+                JOptionPane.showMessageDialog(null, "You have been placed in the queue!");
             } else {
                 JOptionPane.showMessageDialog(null, "You must be logged in to play!");
             }
@@ -124,9 +125,10 @@ public class Tetris extends JFrame {
         return board.getScore();
     }
 
-    public void startGame(long seed){
+    public void startGame(long seed) {
         board.start(seed);
     }
+
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
