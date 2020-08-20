@@ -9,7 +9,9 @@ public class Tetris extends JFrame {
     private JLabel statusBar;
     protected TetrisClientHandler clientHandler;
     protected boolean logged;
-
+    protected int numWins;
+    protected int numGames;
+    protected int highScore;
     protected Board board, oppBoard;
 
     private void initToolBar() {
@@ -73,6 +75,13 @@ public class Tetris extends JFrame {
         JButton statsButton = new JButton("Stats");
         statsButton.addActionListener((event) -> {
             // message dialog with stats goes here
+            if(!logged)
+                JOptionPane.showMessageDialog(null, "You must be logged in to see your stats!");
+            else{
+                String msg = String.format("Win Rate: %d%%\nNumber of Games Won: %d\nTotal Games Played: %d\nHigh Score: %d\n", 
+                                            100*numWins/numGames, numWins, numGames, highScore);
+                JOptionPane.showMessageDialog(null, msg, "Stats", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
         toolBar.add(statsButton);
 

@@ -83,6 +83,9 @@ public class TetrisClientHandler implements Runnable {
                 }
                 if (line[0].equals("SUCCESS")) {
                     //line[2], line[3], line[4] are stats
+                    tetris.numWins = Integer.parseInt(line[2]);
+                    tetris.numGames = Integer.parseInt(line[3]);
+                    tetris.highScore = Integer.parseInt(line[4]);
                     JOptionPane.showMessageDialog(null, "Successfully logged in! Welcome, " + line[1]);
                     tetris.logged = true;
                 }
@@ -91,12 +94,12 @@ public class TetrisClientHandler implements Runnable {
                     // leaderboard stuff here
                     String msg = "";
                     for(int i = 1; i < line.length; i++){
-                        System.out.println(line[i]);
-                        // String user = line[i].substring(line[i].indexOf(','));
+                        // String user = line[i].substring(0, line[i].indexOf(','));
                         // int score = Integer.parseInt(line[i].substring(line[i].indexOf(',')+1));
-                        // msg += String.format("%3d. %20s %10d", i, user, score);
+                        // msg += String.format("%3d. %s %10d\n", i, user, score);
+                        msg+= String.format("%3d. %s\n", i, line[i]);
                     }
-                    JOptionPane.showMessageDialog(null, msg);
+                    JOptionPane.showMessageDialog(null, msg, "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 if (line[0].equals("MATCH")) {
