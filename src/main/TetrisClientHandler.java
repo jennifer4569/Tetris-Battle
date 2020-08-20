@@ -100,6 +100,7 @@ public class TetrisClientHandler implements Runnable {
 
                 if (line[0].equals("SENT")) {
                     // server gives u the line u sent to the opponent
+                    tetris.oppBoard.addLine(line[1]);
                 }
 
                 if (line[0].equals("OPPONENT") && line.length > 1) {
@@ -114,6 +115,7 @@ public class TetrisClientHandler implements Runnable {
                     }
                     if (line[1].equals("SEND")) {
                         // opponent sent line
+                        tetris.board.addLine(line[2]);
                     }
                     if (line[1].equals("LOSE")) {
                         // opponent lost
