@@ -51,6 +51,13 @@ public class Board extends JPanel implements ActionListener {
             board[i] = Tetromino.NoShape;
         }
     }
+    public void stop(){
+        clearBoard();
+        currPiece.setShape(Tetromino.NoShape);
+        timer.stop();
+        isStarted = false;
+        statusBar.setText("0");
+    }
 
     private void pieceDropped() {
         for (int i = 0; i < 4; i++) {
@@ -71,12 +78,12 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void newPiece() {
-        if(player){
+        // if(player){
             int x = currPiece.setRandomShape();
             currX = BOARD_WIDTH / 2 + 1;
             currY = BOARD_HEIGHT - 1 + currPiece.minY();
 
-            parent.clientHandler.piece(x);
+            // parent.clientHandler.piece(x);
 
             if (!tryMove(currPiece, currX, currY - 1)) {
                 currPiece.setShape(Tetromino.NoShape);
@@ -86,7 +93,7 @@ public class Board extends JPanel implements ActionListener {
 
                 parent.clientHandler.lose(numLinesRemoved);
             }
-        }
+        // }
     }
 
     public void newPiece(int p){

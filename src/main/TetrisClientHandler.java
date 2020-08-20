@@ -52,6 +52,9 @@ public class TetrisClientHandler implements Runnable {
     public void lose(int score) {
         out.println("LOSE " + score);
         inGame = false;
+        JOptionPane.showMessageDialog(null, "You lost!");
+        tetris.board.stop();
+        tetris.oppBoard.stop();
     }
 
     public void run() {
@@ -107,7 +110,7 @@ public class TetrisClientHandler implements Runnable {
                     }
                     if (line[1].equals("PIECE")) {
                         // opponent's next piece
-                        tetris.oppBoard.newPiece(Integer.parseInt(line[2]));
+                        // tetris.oppBoard.newPiece(Integer.parseInt(line[2]));
                     }
                     if (line[1].equals("SEND")) {
                         // opponent sent line
@@ -118,8 +121,8 @@ public class TetrisClientHandler implements Runnable {
                         int score = 0; // replace score with actual score thanks
                         out.println("WIN " + score);
                         JOptionPane.showMessageDialog(null, "You won!");
-                        tetris.board.clearBoard();
-                        tetirs.oppBoard.clearBoard();
+                        tetris.board.stop();
+                        tetris.oppBoard.stop();
                     }
                 }
             }
