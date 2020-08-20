@@ -26,12 +26,12 @@ enum Tetromino {
 public class Shape {
     private Tetromino pieceShape;
     private int[][] coords;
-    private Random rand;
+    private MyRandom rand;
 
     public Shape(long seed) {
         coords = new int[4][2];
         setShape(Tetromino.NoShape);
-        rand = new Random(seed);
+        rand = new MyRandom(seed);
     }
 
     public void setShape(Tetromino shape) {
