@@ -1,18 +1,35 @@
 package src.main;
 
 import java.util.*;
+
 import java.awt.*;
 
-enum Tetromino {
-    NoShape(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }, new Color(0, 0, 0)),
-    ZShape(new int[][] { { 0, -1 }, { 0, 0 }, { -1, 0 }, { -1, 1 } }, new Color(204, 102, 102)),
-    SShape(new int[][] { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } }, new Color(102, 204, 102)),
-    LineShape(new int[][] { { 0, -1 }, { 0, 0 }, { 0, 1 }, { 0, 2 } }, new Color(102, 102, 204)),
-    TShape(new int[][] { { -1, 0 }, { 0, 0 }, { 1, 0 }, { 0, 1 } }, new Color(204, 204, 102)),
-    SquareShape(new int[][] { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } }, new Color(204, 102, 204)),
-    LShape(new int[][] { { -1, -1 }, { 0, -1 }, { 0, 0 }, { 0, 1 } }, new Color(102, 204, 204)),
-    LntShape(new int[][] { { 1, -1 }, { 0, -1 }, { 0, 0 }, { 0, 1 } }, new Color(218, 170, 0)),
-    FillShape(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } }, new Color(100, 100, 100));
+final class Tetromino {
+    public static Tetromino NoShape = new Tetromino(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+            new Color(0, 0, 0));
+    public static Tetromino ZShape = new Tetromino(new int[][] { { 0, -1 }, { 0, 0 }, { -1, 0 }, { -1, 1 } },
+            new Color(204, 102, 102));
+    public static Tetromino SShape = new Tetromino(new int[][] { { 0, -1 }, { 0, 0 }, { 1, 0 }, { 1, 1 } },
+            new Color(102, 204, 102));
+    public static Tetromino LineShape = new Tetromino(new int[][] { { 0, -1 }, { 0, 0 }, { 0, 1 }, { 0, 2 } },
+            new Color(102, 102, 204));
+    public static Tetromino TShape = new Tetromino(new int[][] { { -1, 0 }, { 0, 0 }, { 1, 0 }, { 0, 1 } },
+            new Color(204, 204, 102));
+    public static Tetromino SquareShape = new Tetromino(new int[][] { { 0, 0 }, { 1, 0 }, { 0, 1 }, { 1, 1 } },
+            new Color(204, 102, 204));
+    public static Tetromino LShape = new Tetromino(new int[][] { { -1, -1 }, { 0, -1 }, { 0, 0 }, { 0, 1 } },
+            new Color(102, 204, 204));
+    public static Tetromino LntShape = new Tetromino(new int[][] { { 1, -1 }, { 0, -1 }, { 0, 0 }, { 0, 1 } },
+            new Color(218, 170, 0));
+    public static Tetromino FillShape = new Tetromino(new int[][] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
+            new Color(100, 100, 100));
+
+    public static final Tetromino[] values = { NoShape, ZShape, SShape, LineShape, TShape, SquareShape, LShape,
+            LntShape, FillShape };
+
+    public static Tetromino[] values() {
+        return values;
+    }
 
     public int[][] coords;
     public Color color;
@@ -70,7 +87,7 @@ public class Shape {
         setShape(values[x]);
         return x;
     }
-    
+
     public void setShape(int x) {
         Tetromino[] values = Tetromino.values();
         setShape(values[x]);
