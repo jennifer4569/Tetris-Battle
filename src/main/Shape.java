@@ -61,11 +61,12 @@ public class Shape {
         return pieceShape;
     }
 
-    public void setRandomShape() {
+    public int setRandomShape() {
         Random r = new Random();
         int x = Math.abs(r.nextInt()) % 7 + 1;
         Tetromino[] values = Tetromino.values();
         setShape(values[x]);
+        return x;
     }
 
     public int minX() {

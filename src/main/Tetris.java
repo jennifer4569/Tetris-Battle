@@ -63,6 +63,10 @@ public class Tetris extends JFrame {
         });
         toolBar.add(playButton);
 
+        registerButton.setFocusable(false);
+        loginButton.setFocusable(false);
+        playButton.setFocusable(false);
+
         add(toolBar, BorderLayout.NORTH);
     }
 
