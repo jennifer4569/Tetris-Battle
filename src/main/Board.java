@@ -64,7 +64,7 @@ public class Board extends JPanel implements ActionListener {
             currY++;
         }
 
-        for (int i = BOARD_HEIGHT - 1; i >= 0; --i) {
+        for (int i = BOARD_HEIGHT - 1; i > 0; --i) {
             for (int j = 0; j < BOARD_WIDTH; ++j) {
                 board[i * BOARD_WIDTH + j] = shapeAt(j, i - 1);
             }
@@ -104,7 +104,8 @@ public class Board extends JPanel implements ActionListener {
             isStarted = false;
             statusBar.setText("Game Over");
 
-            if (player) parent.clientHandler.lose(numLinesRemoved);
+            if (player)
+                parent.clientHandler.lose(numLinesRemoved);
         }
     }
 
@@ -332,6 +333,78 @@ public class Board extends JPanel implements ActionListener {
             }
 
         }
+    }
+
+    public void fromString(String str) {
+        for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
+            switch (str.charAt(i)) {
+                case '0':
+                    board[i] = Tetromino.NoShape;
+                    break;
+                case '1':
+                    board[i] = Tetromino.ZShape;
+                    break;
+                case '2':
+                    board[i] = Tetromino.SShape;
+                    break;
+                case '3':
+                    board[i] = Tetromino.LineShape;
+                    break;
+                case '4':
+                    board[i] = Tetromino.TShape;
+                    break;
+                case '5':
+                    board[i] = Tetromino.SquareShape;
+                    break;
+                case '6':
+                    board[i] = Tetromino.LShape;
+                    break;
+                case '7':
+                    board[i] = Tetromino.LntShape;
+                    break;
+                default:
+                    board[i] = Tetromino.FillShape;
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        char[] items = new char[BOARD_HEIGHT * BOARD_WIDTH];
+        for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
+            switch (board[i]) {
+                case NoShape:
+                    items[i] = 0;
+                    break;
+                case ZShape:
+                    items[i] = 1;
+                    break;
+                case SShape:
+                    items[i] = 2;
+                    break;
+                case LineShape:
+                    items[i] = 3;
+                    break;
+                case TShape:
+                    items[i] = 4;
+                    break;
+                case SquareShape:
+                    items[i] = 5;
+                    break;
+                case LShape:
+                    items[i] = 6;
+                    break;
+                case LntShape:
+                    items[i] = 7;
+                    break;
+                default:
+                    items[i] = 8;
+                    break;
+            }
+        }
+
+        return new String(items);
     }
 
 }

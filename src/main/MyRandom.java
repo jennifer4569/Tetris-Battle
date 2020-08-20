@@ -6,7 +6,7 @@ public class MyRandom{
         i = (int) seed;
     }
     public int nextInt(){
-        i = Integer.hashCode(i);
+        i++;
         return i;
     }
 }
