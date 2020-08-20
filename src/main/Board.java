@@ -64,7 +64,7 @@ public class Board extends JPanel implements ActionListener {
             currY++;
         }
 
-        for (int i = 0; i < BOARD_HEIGHT - 1; ++i) {
+        for (int i = BOARD_HEIGHT - 2; i >= 0; --i) {
             for (int j = 0; j < BOARD_WIDTH; ++j) {
                 board[i * BOARD_WIDTH + j] = shapeAt(j, i + 1);
             }
@@ -104,7 +104,7 @@ public class Board extends JPanel implements ActionListener {
             isStarted = false;
             statusBar.setText("Game Over");
 
-            parent.clientHandler.lose(numLinesRemoved);
+            if (player) parent.clientHandler.lose(numLinesRemoved);
         }
     }
 
