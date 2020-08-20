@@ -61,6 +61,7 @@ public class Tetris extends JFrame {
                 JOptionPane.showMessageDialog(null, "You must be logged in to play!");
             }
         });
+        toolBar.add(playButton);
 
         add(toolBar, BorderLayout.NORTH);
     }
