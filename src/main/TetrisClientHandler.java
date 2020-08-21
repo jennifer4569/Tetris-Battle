@@ -198,5 +198,7 @@ public class TetrisClientHandler implements Runnable {
         } 
         catch (IOException e) {
         }
+        JOptionPane.showMessageDialog(null, "Error: Disconnected from server! Please restart the Tetris app!");
+
     }
 }
