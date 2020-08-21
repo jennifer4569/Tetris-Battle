@@ -479,5 +479,9 @@ class TetrisServerHandler implements Runnable {
                 loggedUsers.remove(user);
             }
         }
+        
+        if(inGame){
+            lose(null);
+        }
     }
 }
