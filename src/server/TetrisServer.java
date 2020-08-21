@@ -9,7 +9,7 @@ import java.util.*;
  * It will allow for up to MAX_CLIENTS client connections at a time, 
  * and will manage each client connection through a separate thread. 
  * @author Jennifer Zhang
- * @version 2.5
+ * @version 3.5
  */
 public class TetrisServer {
     
@@ -453,8 +453,6 @@ class TetrisServerHandler implements Runnable {
                     if (inGame) {
                         if (line[0].equals("MOVE") && line.length > 1)
                             move(line[1]);
-                        if (line[0].equals("PIECE") && line.length > 1)
-                            piece(line[1]);
                         if (line[0].equals("BOARD") && line.length > 1)
                             board(line[1]);
                         if (line[0].equals("SEND"))
