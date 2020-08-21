@@ -198,7 +198,7 @@ class TetrisServerHandler implements Runnable {
     }
 
     public void opponentBoard(String board) {
-        out.println("OPPONENT MOVE " + board);
+        out.println("OPPONENT BOARD " + board);
         System.out.println(tName + ": OPPONENT BOARD success, " + board);
     }
 
