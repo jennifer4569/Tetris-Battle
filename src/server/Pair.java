@@ -1,7 +1,13 @@
 package src.server;
 
+/** 
+ * <b>Pair</b> is a representation of a tuple with two items.
+ * @author Michael Ruvinshteyn
+ * @version 1.0
+ */
 public class Pair<K, V> {
 
+    /** Key and Value of  */
     private final K key;
     private final V value;
 
@@ -16,11 +22,6 @@ public class Pair<K, V> {
 
     public V getValue() {
         return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return key.hashCode() ^ value.hashCode();
     }
 
     @Override
