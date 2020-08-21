@@ -82,6 +82,7 @@ public class TetrisClientHandler implements Runnable {
 
     /**
      * Sends the server the String representation of the user's board.
+     * @param board The String representation of the user's board
      */
     public void board(String board) {
         out.println("BOARD " + board);
