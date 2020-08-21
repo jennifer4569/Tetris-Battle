@@ -8,7 +8,7 @@ public class Tetris extends JFrame {
 
     private JLabel statusBar;
     protected TetrisClientHandler clientHandler;
-    protected boolean logged;
+    protected boolean logged, queue, ingame;
     protected int numWins;
     protected int numGames;
     protected int highScore;
@@ -19,6 +19,10 @@ public class Tetris extends JFrame {
 
         JButton registerButton = new JButton("Register");
         registerButton.addActionListener((event) -> {
+            if (logged) {
+                JOptionPane.showMessageDialog(null, "You are already logged in!");
+                return;
+            }
             JTextField field1 = new JTextField();
             JTextField field2 = new JPasswordField();
             JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -38,6 +42,10 @@ public class Tetris extends JFrame {
 
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener((event) -> {
+            if (logged) {
+                JOptionPane.showMessageDialog(null, "You are already logged in!");
+                return;
+            }
             JTextField field1 = new JTextField();
             JTextField field2 = new JPasswordField();
             JPanel panel = new JPanel(new GridLayout(0, 1));
@@ -57,6 +65,10 @@ public class Tetris extends JFrame {
 
         JButton playButton = new JButton("Play");
         playButton.addActionListener((event) -> {
+            if (queue || ingame) {
+                JOptionPane.showMessageDialog(null, "Cannot search for game at this time!");
+                return;
+            }
             if (logged) {
                 clientHandler.play();
                 JOptionPane.showMessageDialog(null, "You have been placed in the queue!");
@@ -75,11 +87,12 @@ public class Tetris extends JFrame {
         JButton statsButton = new JButton("Stats");
         statsButton.addActionListener((event) -> {
             // message dialog with stats goes here
-            if(!logged)
+            if (!logged)
                 JOptionPane.showMessageDialog(null, "You must be logged in to see your stats!");
-            else{
-                String msg = String.format("Win Rate: %d%%\nNumber of Games Won: %d\nTotal Games Played: %d\nHigh Score: %d\n", 
-                                            100*numWins/numGames, numWins, numGames, highScore);
+            else {
+                String msg = String.format(
+                        "Win Rate: %d%%\nNumber of Games Won: %d\nTotal Games Played: %d\nHigh Score: %d\n",
+                        100 * numWins / numGames, numWins, numGames, highScore);
                 JOptionPane.showMessageDialog(null, msg, "Stats", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -97,6 +110,8 @@ public class Tetris extends JFrame {
     public Tetris() {
 
         logged = false;
+        queue = false;
+        ingame = false;
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -160,6 +175,7 @@ public class Tetris extends JFrame {
                 Tetris myTetris = new Tetris();
                 myTetris.setSize(750, 750);
                 myTetris.setLocation(0, 0);
+                myTetris.setResizable(false);
                 myTetris.setVisible(true);
             }
         });

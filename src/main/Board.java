@@ -49,6 +49,8 @@ public class Board extends JPanel implements ActionListener {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
             board[i] = Tetromino.NoShape;
         }
+
+        repaint();
     }
 
     public void stop() {
