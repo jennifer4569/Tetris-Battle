@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.*;
 
+/**
+ * <b>Tetris</b> represents the application that the user runs in order to play
+ * Tetris Battle. The application hosts two <b>Board</b>s and a series of
+ * controls that allows the user to register, login, connect to another player,
+ * or view their stats and leaderboard status.
+ */
 public class Tetris extends JFrame {
 
     private JLabel statusBar;
@@ -14,6 +20,9 @@ public class Tetris extends JFrame {
     protected int highScore;
     protected Board board, oppBoard;
 
+    /**
+     * Iniitialize the toolbar and set it as this application's toolbar.
+     */
     private void initToolBar() {
         JToolBar toolBar = new JToolBar();
 
@@ -107,6 +116,10 @@ public class Tetris extends JFrame {
         add(toolBar, BorderLayout.NORTH);
     }
 
+    /**
+     * Construct the application by initializing the instance variables and
+     * instantiating the GUI components
+     */
     public Tetris() {
 
         logged = false;
@@ -155,19 +168,39 @@ public class Tetris extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    /**
+     * Return the label that represents the status of the current game
+     * 
+     * @return the JLabel representing the status of the game
+     */
     public JLabel getStatusBar() {
         return statusBar;
     }
 
+    /**
+     * Get the score of the current game
+     * 
+     * @return the amount of lines that the player has cleared this game
+     */
     public int getScore() {
         return board.getScore();
     }
 
+    /**
+     * Start the game
+     * 
+     * @param seed - the seed used for the random shape generator
+     */
     public void startGame(long seed) {
         board.start(seed);
         oppBoard.start(seed);
     }
 
+    /**
+     * Driver code for the program
+     * 
+     * @param args - command line arguments (unused)
+     */
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(new Runnable() {
