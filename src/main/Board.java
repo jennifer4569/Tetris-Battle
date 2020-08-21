@@ -4,6 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * <b>Board</b> represents a panel that holds a single Tetris game. The board
+ * can either be active, allowing the player to control it, or passive, waiting
+ * for inputs from the server to update.
+ */
 public class Board extends JPanel implements ActionListener {
 
     private static final int BOARD_WIDTH = 10;
@@ -20,6 +25,13 @@ public class Board extends JPanel implements ActionListener {
     private Tetromino[] board;
     private boolean player;
 
+    /**
+     * Construct a new board
+     * 
+     * @param newParent - the Tetris client connected to this board
+     * @param p         - a boolean indicating whether this board is to be
+     *                  controlled by the player
+     */
     public Board(Tetris newParent, boolean p) {
         player = p;
         setFocusable(true);
@@ -33,18 +45,39 @@ public class Board extends JPanel implements ActionListener {
             addKeyListener(new TetrisKeyAdapter());
     }
 
+    /**
+     * Accessor for a tile's width
+     * 
+     * @return the width of a single tile on the board
+     */
     public int squareWidth() {
         return (int) getSize().getWidth() / BOARD_WIDTH;
     }
 
+    /**
+     * Accessor for a tile's height
+     * 
+     * @return the height of a single tile on the board
+     */
     public int squareHeight() {
         return (int) getSize().getHeight() / BOARD_HEIGHT;
     }
 
+    /**
+     * Accessor for the shape (if any) that occupies a particular tile
+     * 
+     * @param x - the x coordinate
+     * @param y - the y coordinate
+     * @return if a shape exists on the tile, return the shape, otherwise return
+     *         NoShape
+     */
     public Tetromino shapeAt(int x, int y) {
         return board[y * BOARD_WIDTH + x];
     }
 
+    /**
+     * Reset the board to its original empty state
+     */
     public void clearBoard() {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
             board[i] = Tetromino.NoShape;
@@ -53,6 +86,9 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
 
+    /**
+     * Stop the current game
+     */
     public void stop() {
         clearBoard();
         currPiece.setShape(Tetromino.NoShape);
@@ -61,6 +97,12 @@ public class Board extends JPanel implements ActionListener {
         statusBar.setText("0");
     }
 
+    /**
+     * Add a line to the bottom of the board
+     * 
+     * @param line - the string representing the line -- X's are FillShapes and .'s
+     *             are NoShapes
+     */
     public void addLine(String line) {
         if (!checkMove(currPiece, currX, currY - 1)) {
             currY++;
@@ -77,6 +119,9 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Handle a piece that has reached a point where it can no longer descend
+     */
     private void pieceDropped() {
         for (int i = 0; i < 4; i++) {
             int x = currX + currPiece.x(i);
@@ -91,10 +136,18 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Accessor for the current game's score
+     * 
+     * @return the number of lines that the player has cleared this game
+     */
     public int getScore() {
         return numLinesRemoved;
     }
 
+    /**
+     * Generate a new piece and spawn it at the top
+     */
     public void newPiece() {
         currPiece.setRandomShape();
         currX = BOARD_WIDTH / 2 + 1;
@@ -111,6 +164,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Generate a specific new piece and spawn it at the top
+     * 
+     * @param p - the piece to generate
+     */
     public void newPiece(int p) {
         if (!player) {
             currPiece.setShape(p);
@@ -128,11 +186,19 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Attempt to move the current piece down one square
+     */
     private void oneLineDown() {
         if (!tryMove(currPiece, currX, currY - 1))
             pieceDropped();
     }
 
+    /**
+     * ActionListener for the board
+     * 
+     * @param ae - the event that has occurred
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (isFallingFinished) {
@@ -143,6 +209,14 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Draw a single tile on the board
+     * 
+     * @param g     - the graphics editor
+     * @param x     - the x coordinate
+     * @param y     - the y coordinate
+     * @param shape - the shape that occupies this tile
+     */
     private void drawSquare(Graphics g, int x, int y, Tetromino shape) {
         Color color = shape.color;
         g.setColor(color);
@@ -155,6 +229,11 @@ public class Board extends JPanel implements ActionListener {
         g.drawLine(x + squareWidth() - 1, y + squareHeight() - 1, x + squareWidth() - 1, y + 1);
     }
 
+    /**
+     * Paint the entire board
+     * 
+     * @param g - the Graphics editor
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -181,6 +260,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Start the game
+     * 
+     * @param seed - the seed used to generate pseudo-random pieces
+     */
     public void start(long seed) {
         currPiece = new Shape(seed);
         isStarted = true;
@@ -191,6 +275,15 @@ public class Board extends JPanel implements ActionListener {
         timer.start();
     }
 
+    /**
+     * Check if a particular move is valid
+     * 
+     * @param newPiece - the piece used in this move
+     * @param newX     - the x coordinate of the piece
+     * @param newY     - the y coordinate of the piece
+     * @return true if the state of the new piece with its coordinates is valid,
+     *         false otherwise
+     */
     private boolean checkMove(Shape newPiece, int newX, int newY) {
         for (int i = 0; i < 4; ++i) {
             int x = newX + newPiece.x(i);
@@ -205,6 +298,14 @@ public class Board extends JPanel implements ActionListener {
         return true;
     }
 
+    /**
+     * Attempt to perform a move
+     * 
+     * @param newPiece - the piece used in this move
+     * @param newX     - the x coordinate of the piece
+     * @param newY     - the y coordinate of the piece
+     * @return true if the move was successfully performed, false otherwise
+     */
     private boolean tryMove(Shape newPiece, int newX, int newY) {
         for (int i = 0; i < 4; ++i) {
             int x = newX + newPiece.x(i);
@@ -223,11 +324,15 @@ public class Board extends JPanel implements ActionListener {
         currY = newY;
         repaint();
 
-        if (player) sendBoard();
+        if (player)
+            sendBoard();
 
         return true;
     }
 
+    /**
+     * Remove all of the completed lines on the board
+     */
     private void removeFullLines() {
         int numFullLines = 0;
 
@@ -266,6 +371,9 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Hard-drop the current piece
+     */
     private void dropDown() {
         int newY = currY;
 
@@ -279,6 +387,11 @@ public class Board extends JPanel implements ActionListener {
         pieceDropped();
     }
 
+    /**
+     * Move the current piece according to user input
+     * 
+     * @param keyCode - the key that the user pressed
+     */
     public void movePiece(int keyCode) {
         if (!isStarted || currPiece.getShape() == Tetromino.NoShape)
             return;
@@ -306,7 +419,16 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * <b>TetrisKeyAdapter</b> is the KeyAdapter used during a game of Tetris.
+     */
     class TetrisKeyAdapter extends KeyAdapter {
+
+        /**
+         * Handle a key being pressed by the user
+         * 
+         * @param ke - the key that the user pressed
+         */
         @Override
         public void keyPressed(KeyEvent ke) {
             if (!isStarted || currPiece.getShape() == Tetromino.NoShape)
@@ -340,6 +462,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Import the board from a string
+     * 
+     * @param str - a string representation of the board
+     */
     public void fromString(String str) {
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
             switch (str.charAt(i)) {
@@ -374,6 +501,11 @@ public class Board extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Export the board as a string
+     * 
+     * @return a string representing the current state of the board
+     */
     @Override
     public String toString() {
         char[] items = new char[BOARD_HEIGHT * BOARD_WIDTH];
@@ -401,9 +533,12 @@ public class Board extends JPanel implements ActionListener {
         return new String(items);
     }
 
+    /**
+     * Send the current state of the board to the server to update on the opponent's
+     * right-hand panel
+     */
     public void sendBoard() {
         String str = this.toString();
-        // System.out.println("Board: " + str);
         parent.clientHandler.board(str);
     }
 }
