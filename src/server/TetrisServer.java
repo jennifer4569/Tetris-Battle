@@ -197,6 +197,11 @@ class TetrisServerHandler implements Runnable {
         System.out.println(tName + ": MOVE success, " + keyPressed);
     }
 
+    public void opponentBoard(String board) {
+        out.println("OPPONENT MOVE " + board);
+        System.out.println(tName + ": OPPONENT BOARD success, " + board);
+    }
+
     public void opponentMove(String keyPressed) {
         out.println("OPPONENT MOVE " + keyPressed);
         System.out.println(tName + ": OPPONENT MOVE success, " + keyPressed);
@@ -305,6 +310,9 @@ class TetrisServerHandler implements Runnable {
 
                 if (line[0].equals("LEADERBOARD"))
                     leaderboard(line);
+
+                if (line[0].equals("BOARD"))
+                    opponentBoard(line[1]);
 
                 // if logged in
                 if (user != null) {

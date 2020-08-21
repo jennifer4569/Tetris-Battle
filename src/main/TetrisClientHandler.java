@@ -29,6 +29,10 @@ public class TetrisClientHandler implements Runnable {
         out.println("LEADERBOARD");
     }
 
+    public void board(String board) {
+        out.println("BOARD " + board);
+    }
+
     public void leaderboard(int n) {
         out.println("LEADERBOARD " + n);
     }
@@ -128,6 +132,10 @@ public class TetrisClientHandler implements Runnable {
                     }
                     else{
                         System.out.println("OPPONENT " + line[1]);
+                    }
+                    if (line[1].equals("BOARD")) {
+                        System.out.println("opponent updated board");
+                        tetris.oppBoard.fromString(line[2]);
                     }
                     if (line[1].equals("PIECE")) {
                         // opponent's next piece
