@@ -79,7 +79,43 @@ HOW TO USE THE PROGRAM
 =====================================================================================================================
 HOW TO PLAY
 =====================================================================================================================
-   mik pwes
+   The controls of the game are as follows:
+      - Left and right arrow keys to move the piece left and right
+      - Up and down arrow keys to rotate the piece clockwise and counter-clockwise
+      - D to accelerate the piece downwards
+      - Space to drop the piece
+   A row is considered complete when there are does not exist a tile in the row that is not occupied by a tetromino.
+   A piece is considered dropped when it cannot move further downwards.
+   The possible piece shapes are as follows:
+
+      - Z:      XX..
+                .XX.
+
+      - S:      .XX.
+                XX..
+
+      - Line:   XXXX
+                ....
+
+      - T:      .X..
+                XXX.
+
+      - Square: .XX.
+                .XX.
+
+      - L:      ...X
+                .XXX
+
+      - Ln't:   X...
+                XXX.
+   
+   After every dropped piece, all complete rows (if any) will be removed, and the rows above them will shift down
+   to take its place. If more than one row is completed after a single dropped piece, then the opponent will receive
+   one fewer new lines. These new lines will be incomplete, having 1 to 3 gaps. They will be placed at the bottom
+   of your opponent's board, with the newer rows being placed lower. These rows may also be completed, and will add
+   to the score.
+
+   If a new piece spawns and has no way to move down, then you lose.
 
 =====================================================================================================================
 MENU ITEMS
