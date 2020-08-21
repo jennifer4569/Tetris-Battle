@@ -56,9 +56,9 @@ public class TetrisClientHandler implements Runnable {
     public void lose(int score) {
         out.println("LOSE " + score);
         inGame = false;
-        JOptionPane.showMessageDialog(null, "You lost!");
         tetris.board.stop();
         tetris.oppBoard.stop();
+        JOptionPane.showMessageDialog(null, "You lost!");
     }
 
     public void run() {
@@ -151,9 +151,9 @@ public class TetrisClientHandler implements Runnable {
                         inGame = false;
                         int score = tetris.board.getScore();
                         out.println("WIN " + score);
-                        JOptionPane.showMessageDialog(null, "You won!");
                         tetris.board.stop();
                         tetris.oppBoard.stop();
+                        JOptionPane.showMessageDialog(null, "You won!");
                     }
                 }
             }
