@@ -112,93 +112,98 @@ public class TetrisClientHandler implements Runnable {
      */
     public void run() {
         try {
+            socket.setSoTimeout(15000); //timeout after 15 seconds
+            try{
+                InputStream inStream = socket.getInputStream();
+                OutputStream outStream = socket.getOutputStream();
 
-            InputStream inStream = socket.getInputStream();
-            OutputStream outStream = socket.getOutputStream();
+                Scanner in = new Scanner(inStream);
+                out = new PrintWriter(outStream, true); // autoflush
 
-            Scanner in = new Scanner(inStream);
-            out = new PrintWriter(outStream, true); // autoflush
-
-            while (in.hasNextLine()) {
-                String[] line = in.nextLine().split(" ");
-                if (line.length == 0)
-                    continue;
-                    
-                //if received "FAILURE" from the server, this is from an invalid register/login attempt
-                if (line[0].equals("FAILURE")) {
-                    if(line.length > 1 && line[1].equals("INVALID"))
-                        JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain 5-20 characters, and only contain alphanumeric characters!");
-                    else if(line.length > 1 && line[1].equals("TAKEN"))
-                        JOptionPane.showMessageDialog(null, "Error: Username taken!");
-                    else if(line.length > 1 && line[1].equals("INCORRECT"))
-                        JOptionPane.showMessageDialog(null, "Error: Incorrect login credentials!");
-                    else if(line.length > 1 && line[1].equals("LOGGED"))
-                        JOptionPane.showMessageDialog(null, "Error: User already logged in!");
-                    else
-                        JOptionPane.showMessageDialog(null, "Error: Could not validate credentials!");
-                }
-                //if received "SUCCESS" from the server, this means that the user has successfully registered/logged in
-                if (line[0].equals("SUCCESS")) {
-                    tetris.numWins = Integer.parseInt(line[2]);
-                    tetris.numGames = Integer.parseInt(line[3]);
-                    tetris.highScore = Integer.parseInt(line[4]);
-                    JOptionPane.showMessageDialog(null, "Successfully logged in! Welcome, " + line[1]);
-                    tetris.logged = true;
-                }
-
-                //if received "LEADERBOARD" from the server, this means that the client's request for the leaderboard was
-                //finished
-                if (line[0].equals("LEADERBOARD")) {
-                    String msg = "";
-                    for(int i = 1; i < line.length; i++)
-                        msg+= String.format("%3d. %s\n", i, line[i]);
-                    JOptionPane.showMessageDialog(null, msg, "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
-                }
-
-                //if received "MATCH" from the server, this means that the server has successfully matched the client with
-                //another player
-                if (line[0].equals("MATCH")) {
-                    inGame = true;
-                    tetris.startGame(Long.parseLong(line[5]));
-                    JOptionPane.showMessageDialog(null, "Opponent found: " + line[1]);
-                }
-
-                //if received "SENT" from the server, this means that the server has generated the line you requested to send
-                //to your opponent
-                if (line[0].equals("SENT"))
-                    tetris.oppBoard.addLine(line[1]);
-
-
-                //if received "OPPONENT" from the server, we are getting information about the opponent
-                if (line[0].equals("OPPONENT") && line.length > 1) {
-
-                    //if received "OPPONENT MOVE" from the server, the opponent has moved their piece
-                    if (line[1].equals("MOVE"))
-                        tetris.oppBoard.movePiece(Integer.parseInt(line[2]));
-        
-                    //if received "OPPONENT SEND" from the server, the opponent has sent you a line
-                    if (line[1].equals("SEND")) 
-                        tetris.board.addLine(line[2]);
-        
-                    //if received "OPPONENT LOSE" from the server, the opponent has lost
-                    if (line[1].equals("LOSE")) {
-                        inGame = false;
-                        int score = tetris.board.getScore();
-                        out.println("WIN " + score);
-                        tetris.board.stop();
-                        tetris.oppBoard.stop();
-                        JOptionPane.showMessageDialog(null, "You won!");
+                while (in.hasNextLine()) {
+                    String[] line = in.nextLine().split(" ");
+                    if (line.length == 0)
+                        continue;
+                        
+                    //if received "FAILURE" from the server, this is from an invalid register/login attempt
+                    if (line[0].equals("FAILURE")) {
+                        if(line.length > 1 && line[1].equals("INVALID"))
+                            JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain 5-20 characters, and only contain alphanumeric characters!");
+                        else if(line.length > 1 && line[1].equals("TAKEN"))
+                            JOptionPane.showMessageDialog(null, "Error: Username taken!");
+                        else if(line.length > 1 && line[1].equals("INCORRECT"))
+                            JOptionPane.showMessageDialog(null, "Error: Incorrect login credentials!");
+                        else if(line.length > 1 && line[1].equals("LOGGED"))
+                            JOptionPane.showMessageDialog(null, "Error: User already logged in!");
+                        else
+                            JOptionPane.showMessageDialog(null, "Error: Could not validate credentials!");
                     }
-                }
-                //if received "BOARD" from the server, then fromString the sent board
-                if (line[0].equals("BOARD")) {
-                    tetris.oppBoard.fromString(line[1]);
-                }
+                    //if received "SUCCESS" from the server, this means that the user has successfully registered/logged in
+                    if (line[0].equals("SUCCESS")) {
+                        tetris.numWins = Integer.parseInt(line[2]);
+                        tetris.numGames = Integer.parseInt(line[3]);
+                        tetris.highScore = Integer.parseInt(line[4]);
+                        JOptionPane.showMessageDialog(null, "Successfully logged in! Welcome, " + line[1]);
+                        tetris.logged = true;
+                    }
 
+                    //if received "LEADERBOARD" from the server, this means that the client's request for the leaderboard was
+                    //finished
+                    if (line[0].equals("LEADERBOARD")) {
+                        String msg = "";
+                        for(int i = 1; i < line.length; i++)
+                            msg+= String.format("%3d. %s\n", i, line[i]);
+                        JOptionPane.showMessageDialog(null, msg, "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                    //if received "MATCH" from the server, this means that the server has successfully matched the client with
+                    //another player
+                    if (line[0].equals("MATCH")) {
+                        inGame = true;
+                        tetris.startGame(Long.parseLong(line[5]));
+                        JOptionPane.showMessageDialog(null, "Opponent found: " + line[1]);
+                    }
+
+                    //if received "SENT" from the server, this means that the server has generated the line you requested to send
+                    //to your opponent
+                    if (line[0].equals("SENT"))
+                        tetris.oppBoard.addLine(line[1]);
+
+
+                    //if received "OPPONENT" from the server, we are getting information about the opponent
+                    if (line[0].equals("OPPONENT") && line.length > 1) {
+
+                        //if received "OPPONENT MOVE" from the server, the opponent has moved their piece
+                        if (line[1].equals("MOVE"))
+                            tetris.oppBoard.movePiece(Integer.parseInt(line[2]));
+            
+                        //if received "OPPONENT SEND" from the server, the opponent has sent you a line
+                        if (line[1].equals("SEND")) 
+                            tetris.board.addLine(line[2]);
+            
+                        //if received "OPPONENT LOSE" from the server, the opponent has lost
+                        if (line[1].equals("LOSE")) {
+                            inGame = false;
+                            int score = tetris.board.getScore();
+                            out.println("WIN " + score);
+                            tetris.board.stop();
+                            tetris.oppBoard.stop();
+                            JOptionPane.showMessageDialog(null, "You won!");
+                        }
+                    }
+                    //if received "BOARD" from the server, then fromString the sent board
+                    if (line[0].equals("BOARD")) {
+                        tetris.oppBoard.fromString(line[1]);
+                    }
+
+                }
+            } 
+            catch (IOException e) {
             }
-        } 
-        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error: Disconnected from server! Please restart the Tetris app!");
         }
-        JOptionPane.showMessageDialog(null, "Error: Disconnected from server! Please restart the Tetris app!");
+        catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error: Could not connect to server due to too many clients! Please try again later!");
+        }
     }
 }

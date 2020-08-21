@@ -143,6 +143,7 @@ public class Tetris extends JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error: Could not conenct to server! Please restart the Tetris app!");
         }
 
         initToolBar();
@@ -154,7 +155,6 @@ public class Tetris extends JFrame {
 
         board = new Board(this, true);
         panel.add(board);
-        // board.start();
 
         oppBoard = new Board(this, false);
         oppBoard.setBackground(Color.LIGHT_GRAY);
