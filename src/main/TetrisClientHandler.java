@@ -127,7 +127,7 @@ public class TetrisClientHandler implements Runnable {
                 //if received "FAILURE" from the server, this is from an invalid register/login attempt
                 if (line[0].equals("FAILURE")) {
                     if(line.length > 1 && line[1].equals("INVALID"))
-                        JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain only alphanumeric characters!");
+                        JOptionPane.showMessageDialog(null, "Error: Invalid username/password! Must contain 5-20 characters, and only contain alphanumeric characters!");
                     else if(line.length > 1 && line[1].equals("TAKEN"))
                         JOptionPane.showMessageDialog(null, "Error: Username taken!");
                     else if(line.length > 1 && line[1].equals("INCORRECT"))

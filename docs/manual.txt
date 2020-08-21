@@ -1,0 +1,99 @@
+=====================================================================================================================
+=------------------------------------------------    USER MANUAL    ------------------------------------------------=
+=====================================================================================================================
+
+=====================================================================================================================
+DESCRIPTION
+=====================================================================================================================
+   We implemented Tetris Battle, a PvP version of the classic video game Tetris. The game involves trying to 
+   achieve the highest possible score, while simultaneously trying to survive longer than your opponent. 
+   Additionally, on top of attempting to outlast your opponent, you also have the ability to make the game 
+   harder for your opponent by adding partially complete rows to their grid, which could lead to their 
+   disqualification.
+
+   There is be a central server (67.205.133.16), which accepts up to 32 clients at once. The central server 
+   authenticates the users’ login, and stores various statistics about each user, as well as a leaderboard. 
+   It also automatically performs matchmaking for each user who wishes to play.
+
+   NOTE: To be able to run the program, you must have JDK installed.
+
+=====================================================================================================================
+SETUP: INSTALLING JDK
+=====================================================================================================================
+   To run this program, you must have JDK installed. If you do not have JDK installed, please check
+   out this guide: https://www3.ntu.edu.sg/home/ehchua/programming/howto/JDK_HowTo.html
+
+=====================================================================================================================
+HOW TO USE SCRIPTS
+=====================================================================================================================
+   To use the script:
+      1. Open your command prompt/terminal. To do so, open your system search system and type command
+         prompt. If nothing shows up, try to search for terminal.
+	         NOTE: For Windows, you will want to use Powershell instead.
+      2. With the command prompt, go to the Tetris-Battle/ folder. To do so, run the following command:
+            cd <folder path>
+         For example, if this program is in the Downloads folder, then run:
+	         cd Downloads/Tetris-Battle/
+      3. Give the script permissions. To do this, run the following command:
+            - On Windows: chmod +x scripts/script.bat
+	         - On Mac/Linux: chmod +x scripts/script.sh
+      4. Run the script. To run the script, run the following command:
+            - On Windows: ./scripts/script.bat <command>
+            - On Mac/Linux: ./scripts/script.sh <command>
+         For a list of script commands, run:
+            - On Windows: ./scripts/script.bat help
+            - On Mac/Linux: ./scripts/script.sh help
+	 The list of script commands is also listed on docs/readme.txt
+	 NOTE: To properly use the script, you must be in the Tetris-Battle/ directory.
+
+=====================================================================================================================
+HOW TO OPEN THE PROGRAM
+=====================================================================================================================
+   First, compile the program. To do so, run the following command:
+      - On Windows: ./scripts/script.bat compile
+      - On Mac/Linux: ./scripts/script.sh compile
+   Then, run the program. To do so, run the following command:
+      - On Windows: ./scripts/script.bat run
+      - On Mac/Linux: ./scripts/script.sh run
+
+   When you do so, you will see the following:
+      Running program...
+
+   And a window will pop up. This is the Tetris application.
+
+=====================================================================================================================
+HOW TO USE THE PROGRAM
+=====================================================================================================================
+   Users will need to be logged in to play the game:
+      - If you are a new user, you will need to register for a new account. Click "Register" on the toolbar.
+        NOTE: The username and password must be 5-20 characters long, and only contain alphanumeric characters!
+      - If you are a returning user, you can log in by clicking "Login" on the toolbar.
+
+   Upon successfully registering/logging in, you will receive a message telling you that you've successfully 
+   logged in.
+   
+   After you log in, you can play the game, as well as access your player stats.
+   To play, click "Play" on the toolbar. You will then be placed in a matchmaking queue, and will be notified when
+   an opponent connects. See the "HOW TO PLAY" section below for more details on how to play.
+   
+=====================================================================================================================
+HOW TO PLAY
+=====================================================================================================================
+   mik pwes
+
+=====================================================================================================================
+MENU ITEMS
+=====================================================================================================================
+   - Register: Register a new user with the given username and password (must not be logged in)
+   - Login: Login with the given username and password (must not be logged in)
+   - Play: Enter the matchmaking queue to play the game (must be logged in)
+   - Leaderboard: Shows the leaderboard, which is the top 10 high scores (doesn't have to be logged in)
+   - Stats: Shows the user's stats (must be logged in)
+
+=====================================================================================================================
+USAGES
+=====================================================================================================================
+   This program is an interesting and amusing way of playing Tetris with friends and family! Have fun while
+   battling close friends, and laugh over how you've "screwed over" your opponent by sending them lines! 
+   Even without friends to play with, you can still match with another random person, and have a good time!
+   Inspired by the Tetris Battle from Facebook.

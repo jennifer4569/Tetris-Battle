@@ -6,6 +6,7 @@ GOTO START
     echo NOTE: Please make sure that you're running this script under the homeworks/ directory!
     echo    * compile: compiles the java code and javadocs
     echo    * run: runs the program (assumes that you've compiled first)
+    echo    * server: compiles and runs the server code
     echo    * help: lists all the possible commands (brings up this list)
     echo    * clean: cleans the directories
 
@@ -59,6 +60,7 @@ if "%1"=="clean" (
    RMDIR /Q /S docs\jquery >nul 2>&1
    RMDIR /Q /S docs\resources >nul 2>&1
    RMDIR /Q /S docs\script-dir >nul 2>&1
+   RMDIR /Q /S docs\src >nul 2>&1
    
    exit /B 0
 )

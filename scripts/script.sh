@@ -31,6 +31,7 @@ then
     echo "NOTE: Please make sure that you're running this script under the homeworks/ directory!"
     echo "   * compile: compiles the java code and javadocs"
     echo "   * run: runs the program (assumes that you've compiled first)"
+    echo "   * server: compiles and runs the server code"
     echo "   * help: lists all the possible commands (brings up this list)"
     echo "   * clean: cleans the directories"
 
@@ -70,7 +71,7 @@ else
 	#removing javadocs files
 	rm -rf docs/*.html docs/*.js docs/*.zip docs/*.css
 	rm -rf docs/jquery docs/resources docs/element-list
-	rm -rf docs/script-dir 
+	rm -rf docs/script-dir docs/src
    
     fi
 fi
