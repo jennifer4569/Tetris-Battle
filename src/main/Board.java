@@ -376,30 +376,32 @@ public class Board extends JPanel implements ActionListener {
     public String toString() {
         char[] items = new char[BOARD_HEIGHT * BOARD_WIDTH];
         for (int i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; i++) {
-            if (board[i] == Tetromino.NoShape)
-                items[i] = 0;
-            else if (board[i] == Tetromino.ZShape)
-                items[i] = 1;
-            else if (board[i] == Tetromino.SShape)
-                items[i] = 2;
-            else if (board[i] == Tetromino.LineShape)
-                items[i] = 3;
-            else if (board[i] == Tetromino.TShape)
-                items[i] = 4;
-            else if (board[i] == Tetromino.SquareShape)
-                items[i] = 5;
-            else if (board[i] == Tetromino.LShape)
-                items[i] = 6;
-            else if (board[i] == Tetromino.LntShape)
-                items[i] = 7;
+            if (board[i].equals(Tetromino.NoShape))
+                items[i] = '0';
+            else if (board[i].equals(Tetromino.ZShape))
+                items[i] = '1';
+            else if (board[i].equals(Tetromino.SShape))
+                items[i] = '2';
+            else if (board[i].equals(Tetromino.LineShape))
+                items[i] = '3';
+            else if (board[i].equals(Tetromino.TShape))
+                items[i] = '4';
+            else if (board[i].equals(Tetromino.SquareShape))
+                items[i] = '5';
+            else if (board[i].equals(Tetromino.LShape))
+                items[i] = '6';
+            else if (board[i].equals(Tetromino.LntShape))
+                items[i] = '7';
             else
-                items[i] = 8;
+                items[i] = '8';
         }
 
         return new String(items);
     }
 
     public void sendBoard() {
-        parent.clientHandler.board(toString());
+        String str = this.toString();
+        System.out.println("Board: " + str);
+        parent.clientHandler.board(str);
     }
 }
