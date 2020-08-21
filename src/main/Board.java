@@ -98,7 +98,7 @@ public class Board extends JPanel implements ActionListener {
         currX = BOARD_WIDTH / 2 + 1;
         currY = BOARD_HEIGHT - 1 + currPiece.minY();
 
-        sendBoard();
+        // sendBoard();
 
         if (!tryMove(currPiece, currX, currY - 1)) {
             currPiece.setShape(Tetromino.NoShape);
