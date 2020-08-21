@@ -197,6 +197,11 @@ class TetrisServerHandler implements Runnable {
         System.out.println(tName + ": MOVE success, " + keyPressed);
     }
 
+    public void opponentMove(String keyPressed) {
+        out.println("OPPONENT MOVE " + keyPressed);
+        System.out.println(tName + ": OPPONENT MOVE success, " + keyPressed);
+    }
+
     public void board(String board){
         opponent.opponentBoard(board);
         System.out.println(tName + ": BOARD success, " + board);
@@ -205,11 +210,6 @@ class TetrisServerHandler implements Runnable {
     public void opponentBoard(String board) {
         out.println("OPPONENT BOARD " + board);
         System.out.println(tName + ": OPPONENT BOARD success, " + board);
-    }
-
-    public void opponentMove(String keyPressed) {
-        out.println("OPPONENT MOVE " + keyPressed);
-        System.out.println(tName + ": OPPONENT MOVE success, " + keyPressed);
     }
 
     private void piece(String piece) {
@@ -316,9 +316,6 @@ class TetrisServerHandler implements Runnable {
                 if (line[0].equals("LEADERBOARD"))
                     leaderboard(line);
 
-                if (line[0].equals("BOARD"))
-                    board(line[1]);
-
                 // if logged in
                 if (user != null) {
                     if (line[0].equals("PLAY") && !inQueue && !inGame)
@@ -328,6 +325,8 @@ class TetrisServerHandler implements Runnable {
                             move(line[1]);
                         if (line[0].equals("PIECE") && line.length > 1)
                             piece(line[1]);
+                        if (line[0].equals("BOARD") && line.length > 1)
+                            board(line[1]);
                         if (line[0].equals("SEND"))
                             send();
                         if (line[0].equals("LOSE"))
