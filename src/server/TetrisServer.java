@@ -36,7 +36,8 @@ public class TetrisServer {
             
             //awaits for clients to connect, and when they do, creates a new thread to handle the connection
             while (true) {
-                if(Thread.activeCount() < MAX_CLIENTS){
+		//exclude the main thread
+                if(Thread.activeCount()-1 < MAX_CLIENTS){
                     Socket socket = s.accept();
                     System.out.println("SERVER: Client connected");
 
