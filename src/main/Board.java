@@ -225,6 +225,8 @@ public class Board extends JPanel implements ActionListener {
         currY = newY;
         repaint();
 
+        sendBoard();
+
         return true;
     }
 

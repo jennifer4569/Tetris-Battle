@@ -97,6 +97,10 @@ public class TetrisClientHandler implements Runnable {
                     tetris.logged = true;
                 }
 
+                if (line[0].equals("BOARD")) {
+                    tetris.oppBoard.fromString(line[1]);
+                }
+
                 if (line[0].equals("LEADERBOARD")) {
                     // leaderboard stuff here
                     String msg = "";
@@ -132,10 +136,6 @@ public class TetrisClientHandler implements Runnable {
                     }
                     else{
                         System.out.println("OPPONENT " + line[1]);
-                    }
-                    if (line[1].equals("BOARD")) {
-                        System.out.println("opponent updated board");
-                        tetris.oppBoard.fromString(line[2]);
                     }
                     if (line[1].equals("PIECE")) {
                         // opponent's next piece
