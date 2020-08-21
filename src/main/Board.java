@@ -225,7 +225,7 @@ public class Board extends JPanel implements ActionListener {
         currY = newY;
         repaint();
 
-        sendBoard();
+        if (player) sendBoard();
 
         return true;
     }
@@ -405,7 +405,7 @@ public class Board extends JPanel implements ActionListener {
 
     public void sendBoard() {
         String str = this.toString();
-        System.out.println("Board: " + str);
+        // System.out.println("Board: " + str);
         parent.clientHandler.board(str);
     }
 }
