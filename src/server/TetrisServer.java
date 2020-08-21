@@ -307,8 +307,10 @@ class TetrisServerHandler implements Runnable {
      * @param board The String representation of the client's board
      */
     public void board(String board){
-        opponent.opponentBoard(board);
-        System.out.println(tName + ": BOARD success, " + board);
+        if(opponent != null){
+            opponent.opponentBoard(board);
+            System.out.println(tName + ": BOARD success, " + board);
+        }
     }
 
     /**
@@ -479,7 +481,7 @@ class TetrisServerHandler implements Runnable {
                 loggedUsers.remove(user);
             }
         }
-        
+
         if(inGame){
             lose(null);
         }
