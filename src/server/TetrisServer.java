@@ -36,12 +36,14 @@ public class TetrisServer {
             
             //awaits for clients to connect, and when they do, creates a new thread to handle the connection
             while (true) {
-                Socket socket = s.accept();
-                System.out.println("SERVER: Client connected");
+                if(Thread.activeCount() < MAX_CLIENTS){
+                    Socket socket = s.accept();
+                    System.out.println("SERVER: Client connected");
 
-                TetrisServerHandler serverHandler = new TetrisServerHandler(socket, matchmakingQueue, queueLock, loggedUsers, loggedLock);
-                Thread t = new Thread(serverHandler);
-                t.start();
+                    TetrisServerHandler serverHandler = new TetrisServerHandler(socket, matchmakingQueue, queueLock, loggedUsers, loggedLock);
+                    Thread t = new Thread(serverHandler);
+                    t.start();
+                }
             }
         }
         catch (Exception e) {
